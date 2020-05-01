@@ -1,0 +1,10 @@
+.pokemon-list-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2em;
+    margin: 20px;
+    padding: 10px 0;
+}
+.MuiCardActionArea-root {
+    padding: 10px 0;
+}

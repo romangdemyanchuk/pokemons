@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.pokemons {
+    color:#000;
+    text-align: center;
+}
+.selectedPage {
+    font-weight: bold;
+}

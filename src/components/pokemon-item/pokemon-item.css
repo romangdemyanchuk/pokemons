@@ -1,0 +1,17 @@
+.pokemon-item {
+    margin: 50px;
+    padding: 10px 0 !important;
+}
+.pokemon-items-name {
+    font-family: 'Arial';
+    font-size: 22px;
+    margin: 15px 0 18px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.pokemon-item img {
+    width: 200px;
+}
+.MuiPaper-elevation1 {
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.2), 3px 2px 0 2px rgba(0,0,0,0.14), 1px 2px 0 3px rgba(0,0,0,0.12) !important;
+}
