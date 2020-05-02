@@ -72,6 +72,7 @@ export default class EachItemInfo extends Component {
         }
         let statsPokemon = null;
         if (pokemon.stats) {
+            console.log('pokemon', pokemon);
              statsPokemon = pokemon.stats.map((item) => {
                 return (
                     <div className="statPokemon">
@@ -106,7 +107,7 @@ export default class EachItemInfo extends Component {
                 <div className="pokemon-items-image">
                     <img src={this.getImage(id)}/>
                 </div>
-                <div className="pokemon-items-name">
+                <div className="pokemon-items-name pokemon-name">
                     {pokemon.name}
                 </div>
                 <div className="pokemon-items-type">
