@@ -72,7 +72,6 @@ export default class EachItemInfo extends Component {
         }
         let statsPokemon = null;
         if (pokemon.stats) {
-            console.log('pokemon', pokemon);
              statsPokemon = pokemon.stats.map((item) => {
                 return (
                     <div className="statPokemon">
@@ -117,9 +116,7 @@ export default class EachItemInfo extends Component {
                 </div>
             </div>
             <div className="type-stat-wrapper">
-                <div className="statsPokemon-wrapper">
-                    {statsPokemon}
-                </div>
+                {statsPokemon}
             </div>
         </div> : null;
         const spinner = loading ? <Spinner/>  : null;

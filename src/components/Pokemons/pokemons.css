@@ -9,3 +9,8 @@
 .selectedPage {
     font-weight: bold;
 }
+@media screen and (max-width: 350px) {
+    .MuiPagination-ul {
+        width: 350px;
+    }
+}

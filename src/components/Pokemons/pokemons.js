@@ -4,9 +4,11 @@ import Spinner from '../Spinner';
 import PokemonsList from '../Pokemons-list';
 import Pagination from '@material-ui/lab/Pagination';
 import SearchByName from '../SearchByName/SearchByName';
+import store from '../../Store'
+import {observer} from "mobx-react";
 import './pokemons.css';
 
-export default class Pokemons extends Component {
+class Pokemons extends Component {
     pokeapiService = new PokeApiService();
     state= {
         name: null,
@@ -14,7 +16,7 @@ export default class Pokemons extends Component {
         pokemons: [],
         loading: true,
         term:'',
-        pageSize: 20,
+        pageSize: 10,
         totalPokemonsCount: 0,
         pagesCount: null,
         currentPage: 1
@@ -45,19 +47,29 @@ export default class Pokemons extends Component {
         });
     }
     handleChange = (event, value) => {
-        console.log(123, this.state.pokemons)
         this.setState({
             currentPage: value,
         });
     };
+    ItemsCountOnPage = (value) => {
+        this.setState({
+            pageSize: value,
+            pagesCount: Math.ceil(this.state.pokemons.length/this.state.pageSize)
+        });
+    };
     render() {
-        const {loading, term, pokemons,
-            pageSize, currentPage, pagesCount} = this.state;
+        const {loading, term, pokemons, pageSize, currentPage, pagesCount} = this.state;
         const visibleItems=this.search(this.state.pokemons, term);
         const pkms = visibleItems ? visibleItems : pokemons;
-        const currPage = (currentPage ? currentPage-1 : 0);
+        const currPage = (currentPage ? currentPage - 1 : 0);
         const spinner = loading ? <Spinner/> : null;
         const content = !loading && <div>
+            <div>
+                <button onClick={()=> this.ItemsCountOnPage(10)}>10</button>
+                <button onClick={()=> this.ItemsCountOnPage(20)}>20</button>
+                <button onClick={()=> this.ItemsCountOnPage(50)}>50</button>
+
+            </div>
             <Pagination count={pagesCount} page={currentPage} onChange={this.handleChange} />
             <div>
                 <PokemonsList pokemonsList={pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
@@ -72,3 +84,4 @@ export default class Pokemons extends Component {
         );
     }
 };
+export default observer(Pokemons)

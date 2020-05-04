@@ -15,3 +15,43 @@
 .MuiPaper-elevation1 {
     box-shadow: 0 0 0 2px rgba(0,0,0,0.2), 3px 2px 0 2px rgba(0,0,0,0.14), 1px 2px 0 3px rgba(0,0,0,0.12) !important;
 }
+@media screen and (max-width: 1200px) {
+    .pokemon-item img {
+        width: 250px;
+    }
+    .pokemon-items-name {
+        font-size: 25px;
+    }
+}
+@media screen and (max-width: 900px) {
+    .pokemon-item img {
+        width: 200px;
+    }
+    .pokemon-items-name {
+        font-size: 22px;
+    }
+    .pokemon-items-name {
+        margin: 5px 0 8px 0;
+    }
+}
+@media screen and (max-width: 768px) {
+    .pokemon-item img {
+        width: 215px;
+    }
+    .pokemon-items-name {
+        font-size: 25px;
+    }
+}
+@media screen and (max-width: 576px) {
+    .pokemon-item img {
+        width: 180px;
+    }
+    .pokemon-items-name {
+        font-size: 22px;
+    }
+}
+@media screen and (max-width: 470px) {
+    .pokemon-item img {
+        width: 230px;
+    }
+}

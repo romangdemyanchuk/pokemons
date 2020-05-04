@@ -23,8 +23,6 @@ export default class PokemonItem extends Component {
                        </div>
 
                    </CardActionArea>
-
-                   {/*<Link to={`/pokemon-item/${id}`}>*/}
                </Card>
             </Link>
        )
