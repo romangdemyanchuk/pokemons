@@ -143,7 +143,7 @@
         margin-left: 240px;
     }
 }
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 650px) {
     .each-item img {
         margin-left: 20px;
     }
@@ -167,38 +167,36 @@
         left: 7px;
         top: 120px;
     }
-}
-@media screen and (max-width: 545px) {
-    .type-stat-wrapper {
-        display: inline-table;
-        margin-left: -10px;
-    }
-    .stat-name {
-        font-size: 20px;
-    }
     .progress {
-        margin-left: 165px;
-        min-width: 200px;
-        max-width: 200px;
+        margin-left: 250px;
+        min-width: 220px;
+        max-width: 220px;
     }
     .progress-bar small {
         padding-left: 45px;
     }
+    .typesPokemon-wrapper {
+        margin-left: -140px;
+    }
 }
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 490px) {
     .each-item img {
-        width: 180px;
+        width: 160px;
     }
     .typesPokemon-wrapper {
         display: block;
+        margin-left: -90px;
     }
     .typePokemon {
         margin-bottom: 6px;
     }
+    .type-stat-wrapper {
+        margin-left: -16px;
+    }
     .pokemon-name {
         margin-top: 65px;
         margin-left: 15px;
-        font-size: 20px;
+        font-size: 17px;
     }
     .each-item img {
         margin-left: 10px;
@@ -206,7 +204,7 @@
     .progress {
         min-width: 160px;
         max-width: 160px;
-        margin-left: 145px;
+        margin-left: 140px;
     }
     .stat-name {
         font-size: 18px;

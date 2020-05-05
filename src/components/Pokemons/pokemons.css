@@ -2,6 +2,9 @@
     margin: 0;
     padding: 0;
 }
+li {
+    list-style-type: none;
+}
 .pokemons {
     color:#000;
     text-align: center;
@@ -9,8 +12,60 @@
 .selectedPage {
     font-weight: bold;
 }
-@media screen and (max-width: 350px) {
-    .MuiPagination-ul {
-        width: 350px;
+.MuiPagination-ul {
+    max-width: 315px !important;
+    margin: 0 auto !important;
+}
+.MuiPaginationItem-root {
+    margin: 0 1px !important;
+}
+.droplink {
+    width:20px;
+    border-radius:3px;
+    margin:10px 0 0 25px
+}
+#dropdown li {
+    margin-bottom: 7px;
+    display: unset;
+}
+#dropdown {
+    margin-top: -10px;
+}
+.wrapper {
+    position: absolute;
+    /*display: flex;*/
+    text-align: left;
+    margin-left: 255px;
+    top: 55px;
+}
+.fa-caret-down:before {
+    margin: 0 4px 0 69px;
+}
+.active-btn {
+    border: 1px solid red;
+    background-color: yellow;
+}
+.fa:hover {
+    cursor: pointer;
+}
+.paginate {
+    cursor: pointer;
+    border: 1px solid #000;
+    padding: 1px 5px;
+    border-radius: 5px;
+}
+@media screen and (max-width: 1070px) {
+    .wrapper {
+        margin-left: 200px;
+    }
+}
+@media screen and (max-width: 945px) {
+    .wrapper {
+        margin-left: 90px;
+    }
+}
+@media screen and (max-width: 710px) {
+    .wrapper {
+        margin: 40px 0 0 10px;
     }
 }
