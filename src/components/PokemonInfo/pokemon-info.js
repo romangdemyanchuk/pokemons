@@ -3,7 +3,9 @@ import {Link} from "react-router-dom";
 import PokeApiService from "../../Services/pokeapi-service";
 import Spinner from "../Spinner";
 import {Button} from '@material-ui/core';
-import './EachItemInfo.css'
+import './pokemon-info.css'
+import star1 from '../../images/star2.png';
+import star2 from '../../images/star1.png';
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -26,11 +28,12 @@ const TYPE_COLORS = {
     water: '3295F6'
 };
 
-export default class EachItemInfo extends Component {
+export default class PokemonInfo extends Component {
     pokeapiService = new PokeApiService();
     state= {
         loading: true,
-        pokemon:[]
+        pokemon: {},
+        isFavorite: false
     };
     constructor(props) {
         super(props);
@@ -42,22 +45,67 @@ export default class EachItemInfo extends Component {
                 this.setState({
                     pokemon,
                     loading: false
+                }, () => {
+                    this.checkPokemonIsFavorite()
                 });
             });
     }
-    getImage(id) {
+    checkPokemonIsFavorite(){
+        const localItems = localStorage.getItem("items");
+        const items = JSON.parse(localItems);
+        const index = items.findIndex((el) => el === this.state.pokemon.id);
+        if(index !== -1) {
+            this.setState({
+                isFavorite: true
+            });
+        }
+    }
+    getImage() {
         return (`https://pokeres.bastionbot.org/images/pokemon/${this.props.match.params.id}.png`);
     }
+    StarClick = (e) => {
+        e.preventDefault();
+        this.setState((state) => {
+            return {
+                isFavorite: !state.isFavorite
+            }
+        });
+        const localItems = localStorage.getItem("items");
+        if (!localItems) {
+            localStorage.setItem("items", JSON.stringify([this.state.pokemon.id]));
+        } else {
+            const items = JSON.parse(localItems);
+            const index = items.findIndex((el) => el === this.state.pokemon.id);
+            console.log( 'items', items   );
+            console.log( 'this.state.pokemon.id', this.state.pokemon.id   );
+            console.log( 'index', index   );
+            if(index !== -1) {
+                    const newArr = [
+                        ...items.slice(0, index),
+                        ...items.slice(index +1)
+                    ];
+                localStorage.setItem("items", JSON.stringify(newArr));
+            }
+            else {
+                items.push(this.state.pokemon.id);
+                localStorage.setItem("items", JSON.stringify(items));
+            }
+
+
+
+        }
+    };
     render() {
+
         const {loading, pokemon} = this.state;
         const {id} = this.props;
         let typesPokemon = null;
         if (pokemon.types) {
              typesPokemon = pokemon.types.map((item) => {
                 return (
-                    <div className="typePokemon">
+                    <div  key={item.id}>
+                        <div className="typePokemon" >
                         <span
-                            key={item.type.name}
                             className="badge badge-pill mr-1"
                             style={{
                                 backgroundColor: `#${TYPE_COLORS[item.type.name]}`,
@@ -66,6 +114,7 @@ export default class EachItemInfo extends Component {
                         >
                             {item.type.name}
                         </span>
+                        </div>
                     </div>
                 );
             });
@@ -74,18 +123,20 @@ export default class EachItemInfo extends Component {
         if (pokemon.stats) {
              statsPokemon = pokemon.stats.map((item) => {
                 return (
-                    <div className="statPokemon">
-                        <div className="stat-name">
-                            {item.stat.name}
-                        </div>
-                        <div className="base_stat">
-                            <div className="progress">
-                                <div  className="progress-bar" role="progressbar"
-                                    style={{ width: `${item.base_stat}%`,
-                                    }}
-                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
-                                >
-                                    <small>{item.base_stat}</small>
+                    <div key={item.id}>
+                        <div className="statPokemon">
+                            <div className="stat-name">
+                                {item.stat.name}
+                            </div>
+                            <div className="base_stat">
+                                <div className="progress">
+                                    <div  className="progress-bar" role="progressbar"
+                                          style={{ width: `${item.base_stat}%`,
+                                          }}
+                                          aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                    >
+                                        <small>{item.base_stat}</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +164,11 @@ export default class EachItemInfo extends Component {
                     <div className="typesPokemon-wrapper">
                         {typesPokemon}
                     </div>
+                </div>
+                <div className="star">
+                    <img src={this.state.isFavorite ? star1 : star2} className="star-img"
+                         onClick={this.StarClick}
+                    />
                 </div>
             </div>
             <div className="type-stat-wrapper">

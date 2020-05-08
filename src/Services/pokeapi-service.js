@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios'
 
 export default class PokeApiService {
     _apiBase = 'https://pokeapi.co/api';
@@ -12,6 +11,9 @@ export default class PokeApiService {
     }
     getAll() {
         return this.getResource(`/v2/pokemon?limit=100`);
+    }
+    getAllTypes(id) {
+        return this.getResource(`/v2/pokemon/${id}`);
     }
     async getPokemonCharacteristic(id) {
         return this.getResource(`/v2/pokemon/${id}`);

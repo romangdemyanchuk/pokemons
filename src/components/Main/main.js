@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import PokeApiService from "../../Services/pokeapi-service";
 import Spinner from '../Spinner';
-import PokemonsList from '../Pokemons-list';
+import PokemonsList from '../PokemonsList';
 import Pagination from '@material-ui/lab/Pagination';
 import { Button } from '@material-ui/core';
 import SearchByName from '../SearchByName/SearchByName';
 import store from '../../Store'
 import {observer} from "mobx-react";
-import './pokemons.css';
+import './main.css';
 
-class Pokemons extends Component {
+class Main extends Component {
     pokeapiService = new PokeApiService();
     state= {
         name: null,
@@ -21,10 +21,12 @@ class Pokemons extends Component {
         totalPokemonsCount: 0,
         pagesCount: null,
         currentPage: 1,
-        filter:''
+        filter:'',
+        types:[]
     };
     componentDidMount() {
         this.allPokemons();
+        // this.allTypes();
     }
      allPokemons() {
          this.pokeapiService.getAll()
@@ -36,6 +38,15 @@ class Pokemons extends Component {
              });
         });
      }
+    // allTypes() {
+    //     this.pokeapiService.getAllTypes(this.props.match.params.id)
+    //         .then((pokemons) => {
+    //             this.setState({
+    //                 t
+    //             });
+    //             console.log('pokemons.types', pokemons.types);
+    //         });
+    // }
     onSearchChange = (term) => {
         this.setState({term});
     };
@@ -70,19 +81,20 @@ class Pokemons extends Component {
             pageSize: value,
             pagesCount: Math.ceil(this.state.pokemons.length/this.state.pageSize)
         });
+        let a = document.getElementById('dropdown');
+            a.style.display = 'none';
         this.filter(this.state.pageSize, value);
     };
     DropDown = () => {
         let a = document.getElementById('dropdown');
         if ( a.style.display === 'none' )
-            a.style.display = 'block'
+            a.style.display = 'block';
         else
         if ( a.style.display === 'block' )
             a.style.display = 'none';
     };
     render() {
-        const {loading, term, pokemons, pageSize, currentPage, pagesCount, itemsOnPage} = this.state;
-        console.log('pokemons', pokemons);
+        const {loading, term, pokemons, pageSize, currentPage, pagesCount} = this.state;
         const visibleItems=this.search(pokemons, term);
         const pkms = visibleItems ? visibleItems : pokemons;
         const currPage = (currentPage ? currentPage - 1 : 0);
@@ -91,7 +103,6 @@ class Pokemons extends Component {
             <div className="wrapper">
                 <a onClick={this.DropDown}><i className="fa fa-caret-down"/></a>
                 <span>{pageSize}</span>
-
                 <ul id="dropdown"  style={{display:'none'}}>
                     <li><Button onClick={()=> this.ItemsCountOnPage(10)} className="paginate">10</Button></li>
                     <li><Button onClick={()=> this.ItemsCountOnPage(20)} className="paginate">20</Button></li>
@@ -112,4 +123,4 @@ class Pokemons extends Component {
         );
     }
 };
-export default observer(Pokemons)
+export default observer(Main)

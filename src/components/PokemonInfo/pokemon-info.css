@@ -101,6 +101,12 @@
     top: 156px;
     left: 40%;
 }
+.star img {
+    width: 55px !important;
+}
+.star img:hover {
+    cursor: pointer;
+}
 @media screen and (max-width: 1900px) {
     .each-item img {
         width: 350px;
@@ -110,6 +116,10 @@
     }
     .progress {
         margin-left: 680px;
+    }
+    .star img {
+        margin-top: 15px;
+        margin-left: 35px !important;
     }
 }
 @media screen and (max-width: 1200px) {
@@ -142,6 +152,10 @@
     .progress {
         margin-left: 240px;
     }
+    .star img {
+        margin-top: 90px;
+        margin-left: -90px !important;
+    }
 }
 @media screen and (max-width: 650px) {
     .each-item img {
@@ -154,8 +168,8 @@
         width: 250px;
     }
     .badge {
-        font-size: 19px !important;
-        padding: 2px 5px;
+        font-size: 15px !important;
+        padding: 2px 4px 3px 4px !important;
     }
     .pokemon-name {
         font-size: 25px;
@@ -177,6 +191,9 @@
     }
     .typesPokemon-wrapper {
         margin-left: -140px;
+    }
+    .star img {
+        margin-left: -80px !important;
     }
 }
 @media screen and (max-width: 490px) {
@@ -208,5 +225,9 @@
     }
     .stat-name {
         font-size: 18px;
+    }
+    .star img {
+        width: 45px !important;
+        margin-left: -65px !important;
     }
 }

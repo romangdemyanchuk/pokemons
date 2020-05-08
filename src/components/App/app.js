@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Pokemons from '../Pokemons/pokemons';
-import EachItemInfo from "../EachItemInfo/EachItemInfo";
+import Pokemons from '../Main/main';
+import PokemonInfo from "../PokemonInfo/pokemon-info";
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './app.css';
@@ -10,7 +10,7 @@ export default class App extends Component {
         return (
             <Router>
                 <Route exact path="/item" component={Pokemons}/>
-                <Route path="/item/:id" component={EachItemInfo} />
+                <Route path="/item/:id" component={PokemonInfo} />
 
             </Router>
         );
