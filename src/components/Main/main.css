@@ -29,7 +29,8 @@ li {
     display: unset;
 }
 #dropdown {
-    margin-top: -10px;
+    margin-top: 8px;
+    margin-left: 25px;
 }
 .wrapper {
     position: absolute;
@@ -38,21 +39,25 @@ li {
     margin-left: 255px;
     top: 55px;
 }
-.fa-caret-down:before {
+.fa-caret-down {
     margin: 0 4px 0 69px;
 }
-.active-btn {
-    border: 1px solid red;
-    background-color: yellow;
-}
-.fa:hover {
+.paginate-wrapper {
     cursor: pointer;
 }
 .paginate {
     cursor: pointer;
-    border: 1px solid #000;
-    padding: 1px 5px;
+    padding: 5px 6px;
     border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.08);
+    border: 1px solid darkgrey;
+    margin-right: 7px;
+    transition: .5s ease;
+    /* display: block; */
+}
+.active,
+.paginate:hover{
+    background-color: darkgrey !important;
 }
 .card:hover {
     animation: card .5s linear;

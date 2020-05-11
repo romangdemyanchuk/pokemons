@@ -21,11 +21,11 @@ class Main extends Component {
         totalPokemonsCount: 0,
         pagesCount: null,
         currentPage: 1,
-        filter:'',
-        types:[]
+        types:[],
     };
     componentDidMount() {
         this.allPokemons();
+        // checkPokemonIsFavorite
         // this.allTypes();
     }
      allPokemons() {
@@ -58,32 +58,20 @@ class Main extends Component {
             return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1;
         });
     }
-    filter(pageSize, value) {
-        console.log('pageSize', pageSize);
-        console.log('value', value);
-        // if (this.state.pageSize===value)
-        // switch (filter) {
-        //     case '10':
-        //         return console.log('10');
-        //     case '20':
-        //         return console.log('20');
-        //     case '50':
-        //         return console.log('50');
-        // }
-    }
+
     handleChange = (event, value) => {
         this.setState({
             currentPage: value,
+            pagesCount: Math.ceil(this.state.pokemons.length/this.state.pageSize)
         });
     };
     ItemsCountOnPage = (value) => {
         this.setState({
             pageSize: value,
-            pagesCount: Math.ceil(this.state.pokemons.length/this.state.pageSize)
+            pagesCount: Math.ceil(this.state.pokemons.length/value),
         });
         let a = document.getElementById('dropdown');
             a.style.display = 'none';
-        this.filter(this.state.pageSize, value);
     };
     DropDown = () => {
         let a = document.getElementById('dropdown');
@@ -93,23 +81,38 @@ class Main extends Component {
         if ( a.style.display === 'block' )
             a.style.display = 'none';
     };
+    filterButtons = [10, 20, 50];
     render() {
-        const {loading, term, pokemons, pageSize, currentPage, pagesCount} = this.state;
+        const {loading, term, pokemons, pageSize, currentPage, active, filter} = this.state;
         const visibleItems=this.search(pokemons, term);
         const pkms = visibleItems ? visibleItems : pokemons;
         const currPage = (currentPage ? currentPage - 1 : 0);
+
+        let dropDownItems = this.filterButtons.map((item) => {
+            return (
+                <li>
+                    <button
+                        onClick={() => this.ItemsCountOnPage(item)}
+                        className={pageSize === item ? "paginate active" : "paginate"}
+                    >
+                        {item}
+                    </button>
+                </li>
+            )
+        });
+        console.log('pageSize', pageSize)
         const spinner = loading ? <Spinner/> : null;
         const content = !loading && <div>
             <div className="wrapper">
-                <a onClick={this.DropDown}><i className="fa fa-caret-down"/></a>
-                <span>{pageSize}</span>
+                <div className="paginate-wrapper" onClick={this.DropDown}>
+                    <a><i className="fa fa-caret-down"/></a>
+                    <span>{pageSize}</span>
+                </div>
                 <ul id="dropdown"  style={{display:'none'}}>
-                    <li><Button onClick={()=> this.ItemsCountOnPage(10)} className="paginate">10</Button></li>
-                    <li><Button onClick={()=> this.ItemsCountOnPage(20)} className="paginate">20</Button></li>
-                    <li><Button onClick={()=> this.ItemsCountOnPage(50)} className="paginate">50</Button></li>
+                    {dropDownItems}
                 </ul>
             </div>
-            <Pagination count={pagesCount} page={currentPage} onChange={this.handleChange} />
+            <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
             <div>
                 <PokemonsList pokemonsList={pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
             </div>

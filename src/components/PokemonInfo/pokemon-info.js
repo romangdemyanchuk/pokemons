@@ -4,6 +4,7 @@ import PokeApiService from "../../Services/pokeapi-service";
 import Spinner from "../Spinner";
 import {Button} from '@material-ui/core';
 import './pokemon-info.css'
+import Star from "../Star";
 import star1 from '../../images/star2.png';
 import star2 from '../../images/star1.png';
 
@@ -39,6 +40,9 @@ export default class PokemonInfo extends Component {
         super(props);
         this.GetPokemonInfoById();
     }
+    setlocalStorage = (data) => {
+        localStorage.setItem("items", JSON.stringify(data));
+    }
     GetPokemonInfoById() {
         this.pokeapiService.getPokemonCharacteristic(this.props.match.params.id)
             .then((pokemon) => {
@@ -52,18 +56,21 @@ export default class PokemonInfo extends Component {
     }
     checkPokemonIsFavorite(){
         const localItems = localStorage.getItem("items");
-        const items = JSON.parse(localItems);
-        const index = items.findIndex((el) => el === this.state.pokemon.id);
-        if(index !== -1) {
-            this.setState({
-                isFavorite: true
-            });
+        if(localItems) {
+            const items = JSON.parse(localItems);
+            const index = items.findIndex((el) => el === this.state.pokemon.id);
+            if(index !== -1) {
+                this.setState({
+                    isFavorite: true
+                });
+            }
         }
+
     }
     getImage() {
         return (`https://pokeres.bastionbot.org/images/pokemon/${this.props.match.params.id}.png`);
     }
-    StarClick = (e) => {
+    starClick = (e) => {
         e.preventDefault();
         this.setState((state) => {
             return {
@@ -72,27 +79,23 @@ export default class PokemonInfo extends Component {
         });
         const localItems = localStorage.getItem("items");
         if (!localItems) {
-            localStorage.setItem("items", JSON.stringify([this.state.pokemon.id]));
+            this.setlocalStorage([this.state.pokemon.id]);
         } else {
             const items = JSON.parse(localItems);
             const index = items.findIndex((el) => el === this.state.pokemon.id);
-            console.log( 'items', items   );
-            console.log( 'this.state.pokemon.id', this.state.pokemon.id   );
-            console.log( 'index', index   );
             if(index !== -1) {
                     const newArr = [
                         ...items.slice(0, index),
                         ...items.slice(index +1)
                     ];
-                localStorage.setItem("items", JSON.stringify(newArr));
+                this.setlocalStorage(newArr);
             }
             else {
-                items.push(this.state.pokemon.id);
-                localStorage.setItem("items", JSON.stringify(items));
+                const newArr = [
+                    ...items,this.state.pokemon.id
+                ];
+                this.setlocalStorage(newArr);
             }
-
-
-
         }
     };
     render() {
@@ -165,11 +168,14 @@ export default class PokemonInfo extends Component {
                         {typesPokemon}
                     </div>
                 </div>
-                <div className="star">
-                    <img src={this.state.isFavorite ? star1 : star2} className="star-img"
-                         onClick={this.StarClick}
-                    />
-                </div>
+                {/*<div className="star">*/}
+                {/*    <img src={this.state.isFavorite ? star1 : star2} className="star-img"*/}
+                {/*         onClick={this.StarClick}*/}
+                {/*    />*/}
+                {/*</div>*/}
+                <Star isFavorite={this.state.isFavorite}
+                      starClick={this.starClick}
+                      checkPokemonIsFavorite={this.checkPokemonIsFavorite}/>
             </div>
             <div className="type-stat-wrapper">
                 {statsPokemon}
