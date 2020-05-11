@@ -5,8 +5,6 @@ import Spinner from "../Spinner";
 import {Button} from '@material-ui/core';
 import './pokemon-info.css'
 import Star from "../Star";
-import star1 from '../../images/star2.png';
-import star2 from '../../images/star1.png';
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -99,7 +97,6 @@ export default class PokemonInfo extends Component {
         }
     };
     render() {
-
         const {loading, pokemon} = this.state;
         const {id} = this.props;
         let typesPokemon = null;
@@ -153,33 +150,28 @@ export default class PokemonInfo extends Component {
                     <i className="fa fa-arrow-left"/>
                 </Button>
             </Link>
-            <div className="pokemon-title">
-                Detailed information about selected pokemon
-            </div>
-            <div className="image-name-wrapper">
-                <div className="pokemon-items-image">
-                    <img src={this.getImage(id)}/>
-                </div>
-                <div className="pokemon-items-name pokemon-name">
+            <div className="name-wrapper">
+                <div className="pokemon-name">
                     {pokemon.name}
                 </div>
-                <div className="pokemon-items-type">
-                    <div className="typesPokemon-wrapper">
-                        {typesPokemon}
-                    </div>
-                </div>
-                {/*<div className="star">*/}
-                {/*    <img src={this.state.isFavorite ? star1 : star2} className="star-img"*/}
-                {/*         onClick={this.StarClick}*/}
-                {/*    />*/}
-                {/*</div>*/}
                 <Star isFavorite={this.state.isFavorite}
                       starClick={this.starClick}
                       checkPokemonIsFavorite={this.checkPokemonIsFavorite}/>
             </div>
-            <div className="type-stat-wrapper">
-                {statsPokemon}
+            <div className="pokemon-items-type">
+                <div className="typesPokemon-wrapper">
+                    {typesPokemon}
+                </div>
             </div>
+            <div className="image-wrapper">
+                <div className="pokemon-items-image">
+                    <img src={this.getImage(id)}/>
+                </div>
+                <div className="type-stat-wrapper">
+                    {statsPokemon}
+                </div>
+            </div>
+
         </div> : null;
         const spinner = loading ? <Spinner/>  : null;
         return (

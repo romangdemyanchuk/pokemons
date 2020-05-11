@@ -1,6 +1,6 @@
 import React from 'react'
-import star1 from "../../images/star2.png";
-import star2 from "../../images/star1.png";
+import star1 from "../../images/star2.svg";
+import star2 from "../../images/star1.svg";
 import './star.css'
 
 const Star  = ({isFavorite, starClick}) => {
