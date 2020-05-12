@@ -1,6 +1,6 @@
 .pokemon-item {
     margin: 50px;
-    padding: 10px 0 !important;
+    padding-bottom: 5px !important;
 }
 .pokemon-items-name {
     font-family: 'Arial';
@@ -14,6 +14,13 @@
 }
 .MuiPaper-elevation1 {
     box-shadow: 0 0 0 2px rgba(0,0,0,0.2), 3px 2px 0 2px rgba(0,0,0,0.14), 1px 2px 0 3px rgba(0,0,0,0.12) !important;
+}
+.item-wrapper .star {
+text-align: right;
+}
+.item-wrapper .star img {
+    width: 20px !important;
+    margin: 8px 8px 0 0;
 }
 @media screen and (max-width: 1200px) {
     .pokemon-item img {

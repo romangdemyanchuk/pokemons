@@ -5,6 +5,7 @@ import Spinner from "../Spinner";
 import {Button} from '@material-ui/core';
 import './pokemon-info.css'
 import Star from "../Star";
+import {checkIsFavorite} from "../helpers";
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -27,6 +28,7 @@ const TYPE_COLORS = {
     water: '3295F6'
 };
 
+
 export default class PokemonInfo extends Component {
     pokeapiService = new PokeApiService();
     state= {
@@ -38,9 +40,13 @@ export default class PokemonInfo extends Component {
         super(props);
         this.GetPokemonInfoById();
     }
-    setlocalStorage = (data) => {
-        localStorage.setItem("items", JSON.stringify(data));
+    componentDidMount() {
+        checkIsFavorite(this.setFavorite, this.state.pokemon.id)
     }
+
+    setFavorite = (isFavorite) => {
+        this.setState({isFavorite: isFavorite});
+    };
     GetPokemonInfoById() {
         this.pokeapiService.getPokemonCharacteristic(this.props.match.params.id)
             .then((pokemon) => {
@@ -48,7 +54,7 @@ export default class PokemonInfo extends Component {
                     pokemon,
                     loading: false
                 }, () => {
-                    this.checkPokemonIsFavorite()
+                    this.checkPokemonIsFavorite();
                 });
             });
     }
@@ -63,39 +69,10 @@ export default class PokemonInfo extends Component {
                 });
             }
         }
-
     }
     getImage() {
         return (`https://pokeres.bastionbot.org/images/pokemon/${this.props.match.params.id}.png`);
     }
-    starClick = (e) => {
-        e.preventDefault();
-        this.setState((state) => {
-            return {
-                isFavorite: !state.isFavorite
-            }
-        });
-        const localItems = localStorage.getItem("items");
-        if (!localItems) {
-            this.setlocalStorage([this.state.pokemon.id]);
-        } else {
-            const items = JSON.parse(localItems);
-            const index = items.findIndex((el) => el === this.state.pokemon.id);
-            if(index !== -1) {
-                    const newArr = [
-                        ...items.slice(0, index),
-                        ...items.slice(index +1)
-                    ];
-                this.setlocalStorage(newArr);
-            }
-            else {
-                const newArr = [
-                    ...items,this.state.pokemon.id
-                ];
-                this.setlocalStorage(newArr);
-            }
-        }
-    };
     render() {
         const {loading, pokemon} = this.state;
         const {id} = this.props;
@@ -103,7 +80,7 @@ export default class PokemonInfo extends Component {
         if (pokemon.types) {
              typesPokemon = pokemon.types.map((item) => {
                 return (
-                    <div  key={item.id}>
+                    <div  key={item}>
                         <div className="typePokemon" >
                         <span
                             className="badge badge-pill mr-1"
@@ -123,7 +100,7 @@ export default class PokemonInfo extends Component {
         if (pokemon.stats) {
              statsPokemon = pokemon.stats.map((item) => {
                 return (
-                    <div key={item.id}>
+                    <div key={item}>
                         <div className="statPokemon">
                             <div className="stat-name">
                                 {item.stat.name}
@@ -154,9 +131,10 @@ export default class PokemonInfo extends Component {
                 <div className="pokemon-name">
                     {pokemon.name}
                 </div>
-                <Star isFavorite={this.state.isFavorite}
-                      starClick={this.starClick}
-                      checkPokemonIsFavorite={this.checkPokemonIsFavorite}/>
+                <Star
+                    pokemonId={this.state.pokemon.id}
+                    setFavorite={this.setFavorite}
+                    isFavorite={this.state.isFavorite}/>
             </div>
             <div className="pokemon-items-type">
                 <div className="typesPokemon-wrapper">
@@ -165,7 +143,7 @@ export default class PokemonInfo extends Component {
             </div>
             <div className="image-wrapper">
                 <div className="pokemon-items-image">
-                    <img src={this.getImage(id)}/>
+                    <img alt="pokemonImage" src={this.getImage(id)}/>
                 </div>
                 <div className="type-stat-wrapper">
                     {statsPokemon}

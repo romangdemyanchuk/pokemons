@@ -3,11 +3,12 @@ import PokeApiService from "../../Services/pokeapi-service";
 import Spinner from '../Spinner';
 import PokemonsList from '../PokemonsList';
 import Pagination from '@material-ui/lab/Pagination';
-import { Button } from '@material-ui/core';
 import SearchByName from '../SearchByName/SearchByName';
-import store from '../../Store'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from "@material-ui/core/Checkbox";
 import {observer} from "mobx-react";
 import './main.css';
+import {withMobileDialog} from "@material-ui/core";
 
 class Main extends Component {
     pokeapiService = new PokeApiService();
@@ -22,11 +23,10 @@ class Main extends Component {
         pagesCount: null,
         currentPage: 1,
         types:[],
+        gilad: false
     };
     componentDidMount() {
         this.allPokemons();
-        // checkPokemonIsFavorite
-        // this.allTypes();
     }
      allPokemons() {
          this.pokeapiService.getAll()
@@ -38,15 +38,6 @@ class Main extends Component {
              });
         });
      }
-    // allTypes() {
-    //     this.pokeapiService.getAllTypes(this.props.match.params.id)
-    //         .then((pokemons) => {
-    //             this.setState({
-    //                 t
-    //             });
-    //             console.log('pokemons.types', pokemons.types);
-    //         });
-    // }
     onSearchChange = (term) => {
         this.setState({term});
     };
@@ -57,6 +48,17 @@ class Main extends Component {
         return items.filter((item) =>{
             return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1;
         });
+    }
+    searchFavorite(items) {
+
+        const localItems = localStorage.getItem("items");
+        console.log('localItems', localItems);
+        if(localItems.length === 0) {
+            return items;
+        }
+        // return items.filter((item) =>{
+        //     return item.id.findIndex(localItems) > -1;
+        // });
     }
 
     handleChange = (event, value) => {
@@ -81,16 +83,21 @@ class Main extends Component {
         if ( a.style.display === 'block' )
             a.style.display = 'none';
     };
+    ChangeCheckBox = event => {
+        this.setState({
+             [event.target.name]: event.target.checked
+        })
+    };
     filterButtons = [10, 20, 50];
     render() {
-        const {loading, term, pokemons, pageSize, currentPage, active, filter} = this.state;
-        const visibleItems=this.search(pokemons, term);
+        const {loading, term, pokemons, pageSize, currentPage, gilad} = this.state;
+        const visibleItems = this.search(pokemons, term);
+        const favoritePokemons = this.searchFavorite(pokemons);
         const pkms = visibleItems ? visibleItems : pokemons;
         const currPage = (currentPage ? currentPage - 1 : 0);
-
         let dropDownItems = this.filterButtons.map((item) => {
             return (
-                <li>
+                <li key={item}>
                     <button
                         onClick={() => this.ItemsCountOnPage(item)}
                         className={pageSize === item ? "paginate active" : "paginate"}
@@ -100,7 +107,6 @@ class Main extends Component {
                 </li>
             )
         });
-        console.log('pageSize', pageSize)
         const spinner = loading ? <Spinner/> : null;
         const content = !loading && <div>
             <div className="wrapper">
@@ -114,7 +120,15 @@ class Main extends Component {
             </div>
             <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
             <div>
-                <PokemonsList pokemonsList={pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
+                <FormControlLabel
+                    control={
+                        <Checkbox checked={gilad} onChange={this.ChangeCheckBox} name="gilad" />
+                    }
+                    label="Show favorite pokemons"
+                />
+            </div>
+            <div>
+                <PokemonsList pokemonsList= {gilad ? pokemons : pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
             </div>
         </div>;
         return (
