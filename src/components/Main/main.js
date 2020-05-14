@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import PokeApiService from "../../Services/pokeapi-service";
-import Spinner from '../Spinner';
+import Preloader from '../Preloader';
 import PokemonsList from '../PokemonsList';
 import Pagination from '@material-ui/lab/Pagination';
 import SearchByName from '../SearchByName/SearchByName';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import EmptyFavoritePokemonsList from '../EmptyFavoritePokemonsList/emptyFavoritePokemonsList'
 import Checkbox from "@material-ui/core/Checkbox";
+import Store from '../../Store/index'
 import {observer} from "mobx-react";
 import './main.css';
 
@@ -16,6 +17,7 @@ class Main extends Component {
         name: null,
         photo: null,
         pokemons: [],
+        favouritePokemons: [],
         loading: true,
         term:'',
         pageSize: 10,
@@ -23,7 +25,7 @@ class Main extends Component {
         pagesCount: null,
         currentPage: 1,
         types:[],
-        gilad: false
+        showFavorite: false
     };
     componentDidMount() {
         this.allPokemons();
@@ -49,20 +51,24 @@ class Main extends Component {
             return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1;
         });
     }
-    searchFavorite(items) {
+    searchFavorite = () => {
+        const pokemons = this.state ? this.state.pokemons : [];
         let favoriteItems = [];
         const localItems = localStorage.getItem("items");
         !localItems && localStorage.setItem("items", JSON.stringify([]));
         const localitems = JSON.parse(localItems);
         if(localitems === []) {
-            return items;
+            return pokemons;
         }
-        items.map((item) => {
+        pokemons.map((item) => {
             let splitedUrl = item.url.split('/');
             let id = parseInt(splitedUrl[splitedUrl.length - 2]);
             localitems.includes(id) && favoriteItems.push(item);
         });
-        return favoriteItems;
+        this.setState({
+            favouritePokemons: favoriteItems
+        });
+
     }
     handleChange = (event, value) => {
         this.setState({
@@ -82,20 +88,27 @@ class Main extends Component {
         let a = document.getElementById('dropdown');
         (a.style.display === 'none') ? ( a.style.display = 'block') : a.style.display = 'none';
     };
-    ChangeCheckBox = event => {
+    changeCheckBox = event => {
         this.setState({
              [event.target.name]: event.target.checked
+        }, () => {
+            this.searchFavorite()
         })
+    };
+    slicePokemonsPages = (value) => {
+        const {currentPage, pageSize} = this.state;
+        const currPage = (currentPage ? currentPage - 1 : 0);
+        return value.slice(currPage*pageSize, currPage*pageSize + pageSize)
     };
     filterButtons = [10, 20, 50];
     render() {
-        const {loading, term, pokemons, pageSize, currentPage, gilad} = this.state;
+        const {loading, term, pokemons, pageSize, currentPage, showFavorite, favouritePokemons} = this.state;
         const visibleItems = this.search(pokemons, term);
-        const favoritePokemons = this.searchFavorite(pokemons);
-        console.log('favoritePokemons', favoritePokemons.length);
-        const fpl = favoritePokemons === 0 ? <EmptyFavoritePokemonsList/> : favoritePokemons;
-        const pkms = visibleItems ? visibleItems : pokemons;
-        const currPage = (currentPage ? currentPage - 1 : 0);
+        const pokemonsFavorite = favouritePokemons.length === 0 ?  this.slicePokemonsPages(pokemons) :
+            this.slicePokemonsPages(favouritePokemons);
+        const pokemonsVisible = visibleItems ?  this.slicePokemonsPages(visibleItems)
+            :  this.slicePokemonsPages(pokemons);
+
         let dropDownItems = this.filterButtons.map((item) => {
             return (
                 <li key={item}>
@@ -108,7 +121,7 @@ class Main extends Component {
                 </li>
             )
         });
-        const spinner = loading ? <Spinner/> : null;
+        const spinner = loading ? <Preloader/> : null;
         const content = !loading && <div>
             <div className="wrapper">
                 <div className="paginate-wrapper" onClick={this.dropDown}>
@@ -123,19 +136,21 @@ class Main extends Component {
             <div className="check-box">
                 <FormControlLabel
                     control={
-                        <Checkbox checked={gilad} onChange={this.ChangeCheckBox} name="gilad" />
+                        <Checkbox checked={showFavorite} onChange={this.changeCheckBox} name="showFavorite" />
                     }
                     label="Show only favorite"
                 />
             </div>
             <div>
-                <PokemonsList pokemonsList= {gilad ? fpl : pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
+                <PokemonsList
+                    searchFavorite = {this.searchFavorite}
+                    pokemonsList = {showFavorite ? pokemonsFavorite: pokemonsVisible}/>
             </div>
         </div>;
         return (
-            <div className="pokemons jumbotron rounded">
+            <div className ="pokemons jumbotron rounded">
                 {spinner }
-                {!spinner && <SearchByName onSearchChange={this.onSearchChange}/>}
+                {!spinner && <SearchByName onSearchChange = {this.onSearchChange}/>}
                 {content}
             </div>
         );

@@ -3,7 +3,7 @@ import './pokemon-item.css'
 import {Card, CardActionArea} from '@material-ui/core';
 import Star from "../Star";
 import {Link} from "react-router-dom";
-import {checkIsFavorite} from "../Helpers/helpers";
+import {checkIsFavorite} from "../Helpers/checkIsPokemonFavorite";
 
 export default class PokemonItem extends Component {
     state = {
@@ -11,7 +11,9 @@ export default class PokemonItem extends Component {
     };
     componentDidMount() {
         checkIsFavorite(this.setFavorite, this.props.pokemon.id)
-    }    setFavorite = (isFavorite) => {
+    }
+    setFavorite = (isFavorite) => {
+        this.props.searchFavorite();
         this.setState({isFavorite: isFavorite});
     };
     getImage(id) {

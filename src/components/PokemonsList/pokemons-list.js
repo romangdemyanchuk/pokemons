@@ -2,7 +2,7 @@ import React from 'react'
 import './pokemons-list.css'
 import PokemonItem from "../PokemonItem/pokemon-item";
 
-const PokemonsList = ({pokemonsList}) => {
+const PokemonsList = ({pokemonsList, searchFavorite}) => {
      const list = pokemonsList.map((pokemon) => {
          let splitedUrl = pokemon.url.split('/');
          let id = splitedUrl[splitedUrl.length - 2];
@@ -12,7 +12,7 @@ const PokemonsList = ({pokemonsList}) => {
          };
         return (
             <div key={pokemon.id}>
-                <PokemonItem pokemon={pokemon}/>
+                <PokemonItem searchFavorite={searchFavorite} pokemon={pokemon}/>
             </div>
         )
     });

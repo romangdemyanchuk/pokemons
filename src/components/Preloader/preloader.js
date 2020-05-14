@@ -1,7 +1,7 @@
 import React from 'react';
-import './spinner.css';
+import './preloader.css';
 
-const Spinner = () => {
+const Preloader = () => {
 return (
     <div className="loadingio-spinner-double-ring-kwibtstzgl">
         <div className="ldio-4p635hxe379">
@@ -17,4 +17,4 @@ return (
     </div>
     );
 };
-export default Spinner;
+export default Preloader;

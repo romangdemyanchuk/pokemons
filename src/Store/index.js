@@ -1,5 +1,5 @@
 // import {action, computed, decorate, observable} from "mobx";
-// import PokeApiService from "../../Services/pokeapi-service";
+// import PokeApiService from "../Services/pokeapi-service";
 // import {observer} from "mobx-react";
 //
 // class Store {
@@ -7,12 +7,14 @@
 //         name: null,
 //         photo: null,
 //         pokemons: [],
-//         loading: false,
+//         loading: true,
 //         term:'',
 //         pageSize: 10,
 //         totalPokemonsCount: 0,
 //         pagesCount: null,
-//         currentPage: 1
+//         currentPage: 1,
+//         types:[],
+//         gilad: false
 //     };
 //     set(payload) {
 //         this.pokemonsStore=payload;

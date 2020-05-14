@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import PokeApiService from "../../Services/pokeapi-service";
-import Spinner from "../Spinner";
+import Preloader from "../Preloader";
 import {Button} from '@material-ui/core';
-import './pokemon-info.css'
+import './pokemonDetails.css'
 import Star from "../Star";
-import {checkIsFavorite} from "../Helpers/helpers";
+import {checkIsFavorite} from "../Helpers/checkIsPokemonFavorite";
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -28,7 +28,7 @@ const TYPE_COLORS = {
     water: '3295F6'
 };
 
-export default class PokemonInfo extends Component {
+export default class PokemonDetails extends Component {
     pokeapiService = new PokeApiService();
     state= {
         loading: true,
@@ -150,7 +150,7 @@ export default class PokemonInfo extends Component {
             </div>
 
         </div> : null;
-        const spinner = loading ? <Spinner/>  : null;
+        const spinner = loading ? <Preloader/>  : null;
         return (
             <div className="each-pokemon">
                 {spinner}
