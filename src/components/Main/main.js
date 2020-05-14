@@ -5,10 +5,10 @@ import PokemonsList from '../PokemonsList';
 import Pagination from '@material-ui/lab/Pagination';
 import SearchByName from '../SearchByName/SearchByName';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import EmptyFavoritePokemonsList from '../EmptyFavoritePokemonsList/emptyFavoritePokemonsList'
 import Checkbox from "@material-ui/core/Checkbox";
 import {observer} from "mobx-react";
 import './main.css';
-import {withMobileDialog} from "@material-ui/core";
 
 class Main extends Component {
     pokeapiService = new PokeApiService();
@@ -50,17 +50,20 @@ class Main extends Component {
         });
     }
     searchFavorite(items) {
-
+        let favoriteItems = [];
         const localItems = localStorage.getItem("items");
-        console.log('localItems', localItems);
-        if(localItems.length === 0) {
+        !localItems && localStorage.setItem("items", JSON.stringify([]));
+        const localitems = JSON.parse(localItems);
+        if(localitems === []) {
             return items;
         }
-        // return items.filter((item) =>{
-        //     return item.id.findIndex(localItems) > -1;
-        // });
+        items.map((item) => {
+            let splitedUrl = item.url.split('/');
+            let id = parseInt(splitedUrl[splitedUrl.length - 2]);
+            localitems.includes(id) && favoriteItems.push(item);
+        });
+        return favoriteItems;
     }
-
     handleChange = (event, value) => {
         this.setState({
             currentPage: value,
@@ -75,13 +78,9 @@ class Main extends Component {
         let a = document.getElementById('dropdown');
             a.style.display = 'none';
     };
-    DropDown = () => {
+    dropDown = () => {
         let a = document.getElementById('dropdown');
-        if ( a.style.display === 'none' )
-            a.style.display = 'block';
-        else
-        if ( a.style.display === 'block' )
-            a.style.display = 'none';
+        (a.style.display === 'none') ? ( a.style.display = 'block') : a.style.display = 'none';
     };
     ChangeCheckBox = event => {
         this.setState({
@@ -93,6 +92,8 @@ class Main extends Component {
         const {loading, term, pokemons, pageSize, currentPage, gilad} = this.state;
         const visibleItems = this.search(pokemons, term);
         const favoritePokemons = this.searchFavorite(pokemons);
+        console.log('favoritePokemons', favoritePokemons.length);
+        const fpl = favoritePokemons === 0 ? <EmptyFavoritePokemonsList/> : favoritePokemons;
         const pkms = visibleItems ? visibleItems : pokemons;
         const currPage = (currentPage ? currentPage - 1 : 0);
         let dropDownItems = this.filterButtons.map((item) => {
@@ -110,7 +111,7 @@ class Main extends Component {
         const spinner = loading ? <Spinner/> : null;
         const content = !loading && <div>
             <div className="wrapper">
-                <div className="paginate-wrapper" onClick={this.DropDown}>
+                <div className="paginate-wrapper" onClick={this.dropDown}>
                     <a><i className="fa fa-caret-down"/></a>
                     <span>{pageSize}</span>
                 </div>
@@ -119,16 +120,16 @@ class Main extends Component {
                 </ul>
             </div>
             <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
-            <div>
+            <div className="check-box">
                 <FormControlLabel
                     control={
                         <Checkbox checked={gilad} onChange={this.ChangeCheckBox} name="gilad" />
                     }
-                    label="Show favorite pokemons"
+                    label="Show only favorite"
                 />
             </div>
             <div>
-                <PokemonsList pokemonsList= {gilad ? pokemons : pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
+                <PokemonsList pokemonsList= {gilad ? fpl : pkms.slice(currPage*pageSize, currPage*pageSize+pageSize)}/>
             </div>
         </div>;
         return (
@@ -139,5 +140,5 @@ class Main extends Component {
             </div>
         );
     }
-};
+}
 export default observer(Main)

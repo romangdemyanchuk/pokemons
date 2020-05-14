@@ -3,7 +3,7 @@ import './pokemon-item.css'
 import {Card, CardActionArea} from '@material-ui/core';
 import Star from "../Star";
 import {Link} from "react-router-dom";
-import {checkIsFavorite} from "../helpers";
+import {checkIsFavorite} from "../Helpers/helpers";
 
 export default class PokemonItem extends Component {
     state = {
@@ -11,16 +11,12 @@ export default class PokemonItem extends Component {
     };
     componentDidMount() {
         checkIsFavorite(this.setFavorite, this.props.pokemon.id)
-    }
-
-    setFavorite = (isFavorite) => {
+    }    setFavorite = (isFavorite) => {
         this.setState({isFavorite: isFavorite});
     };
-
     getImage(id) {
         return `https://pokeres.bastionbot.org/images/pokemon/${id}.png`;
     }
-
    render() {
        const {pokemon} = this.props;
        const {isFavorite} = this.state;
@@ -35,7 +31,7 @@ export default class PokemonItem extends Component {
            </div>
        </div>;
        return (
-           <Link to={`/item/${pokemon.id}`}>
+           <Link to={`/${pokemon.id}`}>
                <Card className="card">
                    <CardActionArea className="pokemon-item">
                        {cardInfo}

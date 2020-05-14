@@ -9,7 +9,7 @@ const setlocalStorage = (data) => {
 
 const starClick = (e, pokemonId, setFavorite) => {
     e.preventDefault();
-    pokemonId = parseInt(pokemonId)
+    pokemonId = parseInt(pokemonId);
     const localItems = localStorage.getItem("items");
     if (!localItems) {
         setlocalStorage([pokemonId]);

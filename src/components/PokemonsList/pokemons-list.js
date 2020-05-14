@@ -4,7 +4,6 @@ import PokemonItem from "../PokemonItem/pokemon-item";
 
 const PokemonsList = ({pokemonsList}) => {
      const list = pokemonsList.map((pokemon) => {
-
          let splitedUrl = pokemon.url.split('/');
          let id = splitedUrl[splitedUrl.length - 2];
          pokemon = {

@@ -5,7 +5,7 @@ import Spinner from "../Spinner";
 import {Button} from '@material-ui/core';
 import './pokemon-info.css'
 import Star from "../Star";
-import {checkIsFavorite} from "../helpers";
+import {checkIsFavorite} from "../Helpers/helpers";
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -27,7 +27,6 @@ const TYPE_COLORS = {
     steel: 'B5B5C3',
     water: '3295F6'
 };
-
 
 export default class PokemonInfo extends Component {
     pokeapiService = new PokeApiService();
@@ -122,7 +121,7 @@ export default class PokemonInfo extends Component {
             });
         }
         const content = !loading ? <div className="each-item">
-            <Link to={`/item/`}>
+            <Link to={`/`}>
                 <Button  className='item-button'>
                     <i className="fa fa-arrow-left"/>
                 </Button>

@@ -12,4 +12,4 @@ export const checkIsFavorite = (setFavorite, pokemonId) => {
             setFavorite(false);
         }
     }
-}
+};
