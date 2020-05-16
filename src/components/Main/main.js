@@ -10,6 +10,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Store from '../../Store/index'
 import {observer} from "mobx-react";
 import './main.css';
+import {Button, withMobileDialog} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 class Main extends Component {
     pokeapiService = new PokeApiService();
@@ -18,6 +20,7 @@ class Main extends Component {
         photo: null,
         pokemons: [],
         favouritePokemons: [],
+        activePaginateButton: null,
         loading: true,
         term:'',
         pageSize: 10,
@@ -66,17 +69,17 @@ class Main extends Component {
             localitems.includes(id) && favoriteItems.push(item);
         });
         this.setState({
-            favouritePokemons: favoriteItems
+            favouritePokemons: favoriteItems,
+            pagesCount: Math.ceil( (this.state.showFavorite ? favoriteItems.length : pokemons.length)/this.state.pageSize)
         });
-
-    }
+    };
     handleChange = (event, value) => {
         this.setState({
             currentPage: value,
             pagesCount: Math.ceil(this.state.pokemons.length/this.state.pageSize)
         });
     };
-    ItemsCountOnPage = (value) => {
+    itemsCountOnPage = (value) => {
         this.setState({
             pageSize: value,
             pagesCount: Math.ceil(this.state.pokemons.length/value),
@@ -88,9 +91,10 @@ class Main extends Component {
         let a = document.getElementById('dropdown');
         (a.style.display === 'none') ? ( a.style.display = 'block') : a.style.display = 'none';
     };
-    changeCheckBox = event => {
+    changeCheckBox = e => {
         this.setState({
-             [event.target.name]: event.target.checked
+            [e.target.name]: e.target.checked,
+            currentPage: 1
         }, () => {
             this.searchFavorite()
         })
@@ -103,23 +107,23 @@ class Main extends Component {
     filterButtons = [10, 20, 50];
     render() {
         const {loading, term, pokemons, pageSize, currentPage, showFavorite, favouritePokemons} = this.state;
-        const visibleItems = this.search(pokemons, term);
-        const pokemonsFavorite = favouritePokemons.length === 0 ?  this.slicePokemonsPages(pokemons) :
-            this.slicePokemonsPages(favouritePokemons);
-        const pokemonsVisible = visibleItems ?  this.slicePokemonsPages(visibleItems)
-            :  this.slicePokemonsPages(pokemons);
-
+        let pokemonItems = showFavorite ? favouritePokemons : pokemons;
+        pokemonItems = this.search(pokemonItems, term);
+        const pokemonsList = pokemonItems.length === 0 ? [] : this.slicePokemonsPages(pokemonItems);
+        if (pokemonItems.length === 0 && !loading) {
+            return <EmptyFavoritePokemonsList/>
+        }
         let dropDownItems = this.filterButtons.map((item) => {
             return (
                 <li key={item}>
                     <button
-                        onClick={() => this.ItemsCountOnPage(item)}
+                        onClick={() => this.itemsCountOnPage(item)}
                         className={pageSize === item ? "paginate active" : "paginate"}
                     >
                         {item}
                     </button>
                 </li>
-            )
+            );
         });
         const spinner = loading ? <Preloader/> : null;
         const content = !loading && <div>
@@ -128,11 +132,15 @@ class Main extends Component {
                     <a><i className="fa fa-caret-down"/></a>
                     <span>{pageSize}</span>
                 </div>
-                <ul id="dropdown"  style={{display:'none'}}>
-                    {dropDownItems}
-                </ul>
             </div>
-            <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
+            {
+                pokemonItems.length > pageSize && <div>
+                    <ul id="dropdown"  style={{display:'none'}}>
+                        {dropDownItems}
+                    </ul>
+                    <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
+                </div>
+            }
             <div className="check-box">
                 <FormControlLabel
                     control={
@@ -144,7 +152,7 @@ class Main extends Component {
             <div>
                 <PokemonsList
                     searchFavorite = {this.searchFavorite}
-                    pokemonsList = {showFavorite ? pokemonsFavorite: pokemonsVisible}/>
+                    pokemonsList = {pokemonsList}/>
             </div>
         </div>;
         return (

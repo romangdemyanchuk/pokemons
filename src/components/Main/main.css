@@ -26,12 +26,13 @@ li {
     margin:10px 0 0 25px
 }
 #dropdown li {
-    margin-bottom: 7px;
+    /*margin-bottom: 7px;*/
     display: unset;
 }
 #dropdown {
-    margin-top: 8px;
-    margin-left: 20px;
+    position: absolute;
+    left: 260px;
+    top: 81px;
 }
 .wrapper {
     position: absolute;
@@ -51,17 +52,19 @@ li {
 }
 .paginate {
     cursor: pointer;
-    padding: 5px 6px;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.08);
-    border: 1px solid darkgrey;
+    outline: none;
+    padding: 8px 9px;
+    border-radius: 16px;
+    background-color: #fff;
+    border: 1px solid lightgrey;
     margin-right: 7px;
     transition: .5s ease;
-    /* display: block; */
 }
+
 .active,
 .paginate:hover{
-    background-color: darkgrey !important;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-color: darkgrey;
 }
 .check-box {
     /*text-align: right;*/
@@ -95,14 +98,21 @@ li {
     .wrapper {
         margin-left: 90px;
     }
+    #dropdown {
+        left: 97px;
+    }
 }
 @media screen and (max-width: 710px) {
     .wrapper {
         margin: 40px 0 0 10px;
     }
+    #dropdown {
+        left: 16px;
+        top: 120px;
+    }
 }
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 440px) {
     .MuiFormControlLabel-root {
-        margin-left: 65px !important;
+        margin-left: 95px !important;
     }
 }
