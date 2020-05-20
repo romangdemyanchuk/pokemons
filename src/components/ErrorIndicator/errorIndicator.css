@@ -1,0 +1,20 @@
+.errorWrapper {
+    width: 300px;
+    margin: 0 auto;
+    padding-top: 20px;
+    text-align: center;
+}
+.errorImg {
+    width: 150px !important;
+}
+.errorTitle {
+    color: red;
+    font-weight: bold;
+    font-size: 30px;
+}
+.errorSubTitle {
+    color: #000;
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 10px;
+}

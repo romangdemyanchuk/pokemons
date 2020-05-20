@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Pokemons from '../Main/main';
-import EmptyFavoritePokemonsList from "../EmptyFavoritePokemonsList/emptyFavoritePokemonsList";
 import PokemonDetails from "../PokemonDetails/pokemonDetails";
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -12,7 +11,7 @@ export default class App extends Component {
             <Router>
                 <Route exact path="/" component={Pokemons}/>
                 <Route path="/:id" component={PokemonDetails}/>
-                <Route path="/empty" component={EmptyFavoritePokemonsList}/>
+                {/*<Route path="/empty" component={EmptyFavoritePokemonsList}/>*/}
             </Router>
         );
     }

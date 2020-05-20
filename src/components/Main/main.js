@@ -7,11 +7,9 @@ import SearchByName from '../SearchByName/SearchByName';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import EmptyFavoritePokemonsList from '../EmptyFavoritePokemonsList/emptyFavoritePokemonsList'
 import Checkbox from "@material-ui/core/Checkbox";
-import Store from '../../Store/index'
 import {observer} from "mobx-react";
+import ErrorIndicator from "../ErrorIndicator/errorIndicator";
 import './main.css';
-import {Button, withMobileDialog} from "@material-ui/core";
-import {Link} from "react-router-dom";
 
 class Main extends Component {
     pokeapiService = new PokeApiService();
@@ -28,11 +26,15 @@ class Main extends Component {
         pagesCount: null,
         currentPage: 1,
         types:[],
-        showFavorite: false
+        showFavorite: false,
+        error: false
     };
     componentDidMount() {
         this.allPokemons();
     }
+    onError = (err) => {
+        this.setState({error: true, loading: false})
+    };
      allPokemons() {
          this.pokeapiService.getAll()
              .then((pokemons) => {
@@ -40,8 +42,9 @@ class Main extends Component {
                      pokemons: pokemons.results,
                      loading: false,
                      pagesCount: Math.ceil(pokemons.results.length/this.state.pageSize)
-             });
-        });
+             })
+        })
+     .catch(this.onError)
      }
     onSearchChange = (term) => {
         this.setState({term});
@@ -63,7 +66,7 @@ class Main extends Component {
         if(localitems === []) {
             return pokemons;
         }
-        pokemons.map((item) => {
+        pokemons.map ((item) => {
             let splitedUrl = item.url.split('/');
             let id = parseInt(splitedUrl[splitedUrl.length - 2]);
             localitems.includes(id) && favoriteItems.push(item);
@@ -72,6 +75,7 @@ class Main extends Component {
             favouritePokemons: favoriteItems,
             pagesCount: Math.ceil( (this.state.showFavorite ? favoriteItems.length : pokemons.length)/this.state.pageSize)
         });
+
     };
     handleChange = (event, value) => {
         this.setState({
@@ -106,13 +110,11 @@ class Main extends Component {
     };
     filterButtons = [10, 20, 50];
     render() {
-        const {loading, term, pokemons, pageSize, currentPage, showFavorite, favouritePokemons} = this.state;
+        const {loading, term, pokemons, pageSize, currentPage, showFavorite, favouritePokemons, error} = this.state;
         let pokemonItems = showFavorite ? favouritePokemons : pokemons;
         pokemonItems = this.search(pokemonItems, term);
         const pokemonsList = pokemonItems.length === 0 ? [] : this.slicePokemonsPages(pokemonItems);
-        if (pokemonItems.length === 0 && !loading) {
-            return <EmptyFavoritePokemonsList/>
-        }
+        // console.log('this.state.pokemonsList', pokemonsList.length);
         let dropDownItems = this.filterButtons.map((item) => {
             return (
                 <li key={item}>
@@ -125,19 +127,21 @@ class Main extends Component {
                 </li>
             );
         });
+        const hasData = !(loading || error);
+        const errorMessage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Preloader/> : null;
-        const content = !loading && <div>
-            <div className="wrapper">
-                <div className="paginate-wrapper" onClick={this.dropDown}>
-                    <a><i className="fa fa-caret-down"/></a>
-                    <span>{pageSize}</span>
-                </div>
-            </div>
+        const content = hasData && <div>
             {
                 pokemonItems.length > pageSize && <div>
                     <ul id="dropdown"  style={{display:'none'}}>
                         {dropDownItems}
                     </ul>
+                    <div className="wrapper">
+                        <div className="paginate-wrapper" onClick={this.dropDown}>
+                            <i className="fa fa-caret-down"></i>
+                            <span>{pageSize}</span>
+                        </div>
+                    </div>
                     <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
                 </div>
             }
@@ -150,15 +154,21 @@ class Main extends Component {
                 />
             </div>
             <div>
-                <PokemonsList
-                    searchFavorite = {this.searchFavorite}
-                    pokemonsList = {pokemonsList}/>
+                { pokemonsList.length === 0 && this.state.pagesCount === 0  ?
+                    <EmptyFavoritePokemonsList/> :
+                    <PokemonsList
+                        searchFavorite = {this.searchFavorite}
+                         pokemonsList = {pokemonsList}/>
+
+                }
+x
             </div>
         </div>;
         return (
             <div className ="pokemons jumbotron rounded">
+                {errorMessage}
                 {spinner }
-                {!spinner && <SearchByName onSearchChange = {this.onSearchChange}/>}
+                {!(spinner || errorMessage) && <SearchByName onSearchChange = {this.onSearchChange}/>}
                 {content}
             </div>
         );

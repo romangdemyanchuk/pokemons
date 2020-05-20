@@ -62,7 +62,7 @@
 .badge {
     background-color: rgb(147, 69, 148);
     border-radius: 11px !important;
-    padding: 1px 5px !important;
+    padding: 4px 8px !important;
     font-size: 14px !important;
     margin-right: 5px;
     letter-spacing: 1.5px;
@@ -86,7 +86,6 @@
 .progress {
     background-color: darkgrey;
     min-width: 250px;
-    max-width: 250px;
     border-radius: 10px;
     border: 1px solid #fff;
 }
@@ -116,7 +115,6 @@
 @media screen and (max-width: 1200px) {
     .badge {
         font-size: 17px !important;
-        padding: 3px 6px;
     }
     .stat-name {
         margin-bottom: 4px;
@@ -145,7 +143,7 @@
     }
     .badge {
         font-size: 13px !important;
-        padding: 2px 4px 3px 4px !important;
+        padding: 1px 5px 5px 5px !important;
     }
     .pokemon-name {
         font-size: 25px;

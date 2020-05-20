@@ -32,14 +32,17 @@ li {
 #dropdown {
     position: absolute;
     left: 260px;
-    top: 81px;
+    top: 93px;
 }
 .wrapper {
     position: absolute;
     /*display: flex;*/
     text-align: left;
     margin-left: 255px;
-    top: 55px;
+    top: 65px;
+}
+.MuiPagination-root {
+    margin-top: 10px;
 }
 .fa-caret-down {
     margin-left: 55px;
@@ -94,7 +97,7 @@ li {
         margin-top: 4px !important;
     }
 }
-@media screen and (max-width: 975px) {
+@media screen and (max-width: 1000px) {
     .wrapper {
         margin-left: 90px;
     }
@@ -108,7 +111,7 @@ li {
     }
     #dropdown {
         left: 16px;
-        top: 120px;
+        top: 128px;
     }
 }
 @media screen and (max-width: 440px) {

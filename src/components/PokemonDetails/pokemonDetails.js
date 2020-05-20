@@ -6,6 +6,7 @@ import {Button} from '@material-ui/core';
 import './pokemonDetails.css'
 import Star from "../Star";
 import {checkIsFavorite} from "../Helpers/checkIsPokemonFavorite";
+import ErrorIndicator from "../ErrorIndicator";
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -33,7 +34,11 @@ export default class PokemonDetails extends Component {
     state= {
         loading: true,
         pokemon: {},
-        isFavorite: false
+        isFavorite: false,
+        error: false
+    };
+    onError = (err) => {
+        this.setState({error: true, loading: false})
     };
     constructor(props) {
         super(props);
@@ -55,7 +60,7 @@ export default class PokemonDetails extends Component {
                 }, () => {
                     this.checkPokemonIsFavorite();
                 });
-            });
+            }).catch(this.onError)
     }
     checkPokemonIsFavorite(){
         const localItems = localStorage.getItem("items");
@@ -73,7 +78,7 @@ export default class PokemonDetails extends Component {
         return (`https://pokeres.bastionbot.org/images/pokemon/${this.props.match.params.id}.png`);
     }
     render() {
-        const {loading, pokemon} = this.state;
+        const {loading, pokemon, error} = this.state;
         const {id} = this.props;
         let typesPokemon = null;
         if (pokemon.types) {
@@ -106,13 +111,32 @@ export default class PokemonDetails extends Component {
                             </div>
                             <div className="base_stat">
                                 <div className="progress">
-                                    <div  className="progress-bar" role="progressbar"
-                                          style={{ width: `${item.base_stat}%`,
-                                          }}
-                                          aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
-                                    >
-                                        <small>{item.base_stat}</small>
-                                    </div>
+                                    {item.base_stat > 100 ?
+                                        <div  className="progress-bar" role="progressbar"
+                                              style={{ width: `item.base_stat`,
+                                                  backgroundColor:'red',
+                                                  borderRadius:"10px",
+                                                  color:"#fff"
+
+
+                                              }}
+                                              aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"
+
+                                        >
+
+                                            <small>{item.base_stat}</small>
+                                        </div> : <div  className="progress-bar" role="progressbar"
+                                                       style={{ width: `${item.base_stat}%`
+
+                                                       }}
+                                                       aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"
+
+                                        >
+
+                                            <small>{item.base_stat}</small>
+                                        </div>}
+
+
                                 </div>
                             </div>
                         </div>
@@ -120,7 +144,9 @@ export default class PokemonDetails extends Component {
                 );
             });
         }
-        const content = !loading ? <div className="each-item">
+        const hasData = !(loading || error);
+        const errorMessage = error ? <ErrorIndicator/> : null;
+        const content = hasData && <div className="each-item">
             <Link to={`/`}>
                 <Button  className='item-button'>
                     <i className="fa fa-arrow-left"/>
@@ -149,10 +175,12 @@ export default class PokemonDetails extends Component {
                 </div>
             </div>
 
-        </div> : null;
-        const spinner = loading ? <Preloader/>  : null;
+        </div>;
+
+        const spinner = loading ? <Preloader/> : null;
         return (
             <div className="each-pokemon">
+                {errorMessage}
                 {spinner}
                 {content}
             </div>
