@@ -37,12 +37,12 @@ export default class PokemonDetails extends Component {
         isFavorite: false,
         error: false
     };
-    onError = (err) => {
+    onError = () => {
         this.setState({error: true, loading: false})
     };
     constructor(props) {
         super(props);
-        this.GetPokemonInfoById();
+        this.getPokemonInfoById();
     }
     componentDidMount() {
         checkIsFavorite(this.setFavorite, this.state.pokemon.id)
@@ -51,7 +51,7 @@ export default class PokemonDetails extends Component {
     setFavorite = (isFavorite) => {
         this.setState({isFavorite: isFavorite});
     };
-    GetPokemonInfoById() {
+    getPokemonInfoById() {
         this.pokeapiService.getPokemonCharacteristic(this.props.match.params.id)
             .then((pokemon) => {
                 this.setState({
@@ -111,32 +111,17 @@ export default class PokemonDetails extends Component {
                             </div>
                             <div className="base_stat">
                                 <div className="progress">
-                                    {item.base_stat > 100 ?
                                         <div  className="progress-bar" role="progressbar"
+                                              /*{item.base_stat >= 100 &&*/
                                               style={{ width: `item.base_stat`,
-                                                  backgroundColor:'red',
-                                                  borderRadius:"10px",
-                                                  color:"#fff"
-
-
-                                              }}
+                                                backgroundColor:'red',
+                                                borderRadius:"10px",
+                                                color:"#fff"
+                                            }}
                                               aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"
-
                                         >
-
                                             <small>{item.base_stat}</small>
-                                        </div> : <div  className="progress-bar" role="progressbar"
-                                                       style={{ width: `${item.base_stat}%`
-
-                                                       }}
-                                                       aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"
-
-                                        >
-
-                                            <small>{item.base_stat}</small>
-                                        </div>}
-
-
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -174,9 +159,7 @@ export default class PokemonDetails extends Component {
                     {statsPokemon}
                 </div>
             </div>
-
         </div>;
-
         const spinner = loading ? <Preloader/> : null;
         return (
             <div className="each-pokemon">

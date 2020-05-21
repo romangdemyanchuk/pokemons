@@ -6,7 +6,6 @@ import './star.css'
 const setlocalStorage = (data) => {
     localStorage.setItem("items", JSON.stringify(data));
 };
-
 const starClick = (e, pokemonId, setFavorite) => {
     e.preventDefault();
     pokemonId = parseInt(pokemonId);

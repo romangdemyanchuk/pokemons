@@ -1,11 +1,11 @@
 import React from 'react'
 import './pokemons-list.css'
-import PokemonItem from "../PokemonItem/pokemon-item";
+import spliteUrl from '../Helpers/spliteUrl'
+import PokemonItem from "../PokemonItem/pokemon-item"
 
 const PokemonsList = ({pokemonsList, searchFavorite}) => {
      const list = pokemonsList.map((pokemon) => {
-         let splitedUrl = pokemon.url.split('/');
-         let id = splitedUrl[splitedUrl.length - 2];
+         let id = spliteUrl(pokemon.url);
          pokemon = {
              id,
              ...pokemon
