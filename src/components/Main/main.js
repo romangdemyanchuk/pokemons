@@ -6,8 +6,8 @@ import Pagination from '@material-ui/lab/Pagination';
 import SearchByName from '../SearchByName/SearchByName';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import EmptyFavoritePokemonsList from '../EmptyFavoritePokemonsList/emptyFavoritePokemonsList'
-import spliteUrl from "../Helpers/spliteUrl";
 import Checkbox from "@material-ui/core/Checkbox";
+import Store from '../../Store/index'
 import {observer} from "mobx-react";
 import ErrorIndicator from "../ErrorIndicator/errorIndicator";
 import './main.css';
@@ -22,11 +22,9 @@ class Main extends Component {
         activePaginateButton: null,
         loading: true,
         term:'',
-        pageSize: 10,
-        totalPokemonsCount: 0,
+        // pageSize: 10,
         pagesCount: null,
-        currentPage: 1,
-        types:[],
+        // currentPage: 1,
         showFavorite: false,
         error: false
     };
@@ -45,7 +43,7 @@ class Main extends Component {
                  this.setState({
                      pokemons: pokemons.results,
                      loading: false,
-                     pagesCount: Math.ceil(pokemons.results.length/this.state.pageSize)
+                     pagesCount: Math.ceil(pokemons.results.length/Store.pokemonsStore.pageSize)
              })
         })
      .catch(this.onError)
@@ -71,25 +69,28 @@ class Main extends Component {
             return pokemons;
         }
         pokemons.map ((item) => {
-             let id = spliteUrl(item.url);
-            localitems.includes(id) && favoriteItems.push(item);
+            let splitedUrl = item.url.split('/');
+            let id = parseInt(splitedUrl[splitedUrl.length - 2]);
+            return localitems.includes(id) && favoriteItems.push(item);
         });
         this.setState({
             favouritePokemons: favoriteItems,
-            pagesCount: Math.ceil( (this.state.showFavorite ? favoriteItems.length : pokemons.length)/this.state.pageSize)
+            pagesCount: Math.ceil( (this.state.showFavorite ? favoriteItems.length : pokemons.length)/Store.pokemonsStore.pageSize)
         });
     };
     handleChange = (event, value) => {
         this.setState({
-            currentPage: value,
-            pagesCount: Math.ceil(this.state.pokemons.length/this.state.pageSize)
+            // currentPage: value,
+            pagesCount: Math.ceil(this.state.pokemons.length/Store.pokemonsStore.pageSize)
         });
+        Store.ChangeCurrentPage(value);
     };
     itemsCountOnPage = (value) => {
         this.setState({
-            pageSize: value,
+            // pageSize: value,
             pagesCount: Math.ceil(this.state.pokemons.length/value),
         });
+        Store.ChangePageSize(value);
         let a = document.getElementById('dropdown');
             a.style.display = 'none';
     };
@@ -99,25 +100,26 @@ class Main extends Component {
     };
     changeCheckBox = e => {
         this.setState({
-            [e.target.name]: e.target.checked,
-            currentPage: 1
+            [e.target.name]: e.target.checked
         }, () => {
             this.searchFavorite()
         })
+        Store.ChangeCurrentPage(1);
     };
-    changeCurrentPage = () => {
-        this.setState(prevState => ({
-            currentPage: prevState.currentPage-1
-        }));
-    };
+    // changeCurrentPage = () => {
+    //     Store.pokemonsStore(prevState => ({
+    //         currentPage: prevState.currentPage-1
+    //     }));
+    // };
     slicePokemonsPages = (value) => {
-        const {currentPage, pageSize} = this.state;
-        const currPage = (currentPage ? currentPage - 1 : 0);
-        return value.slice(currPage*pageSize, currPage*pageSize + pageSize)
+        const {pokemonsStore} = Store;
+        const currPage = (pokemonsStore.currentPage ? pokemonsStore.currentPage - 1 : 0);
+        return value.slice(currPage*pokemonsStore.pageSize, currPage*pokemonsStore.pageSize + pokemonsStore.pageSize)
     };
     filterButtons = [10, 20, 50];
     render() {
-        const {loading, term, pokemons, pageSize, currentPage, showFavorite, favouritePokemons, error} = this.state;
+        const {loading, term, pokemons, showFavorite, favouritePokemons, error} = this.state;
+        const {pokemonsStore, currentPage} = Store;
         let pokemonItems = showFavorite ? favouritePokemons : pokemons;
         pokemonItems = this.search(pokemonItems, term);
         const pokemonsList = pokemonItems.length === 0 ? [] : this.slicePokemonsPages(pokemonItems);
@@ -126,7 +128,7 @@ class Main extends Component {
                 <li key={item}>
                     <button
                         onClick={() => this.itemsCountOnPage(item)}
-                        className={pageSize === item ? "paginate active" : "paginate"}
+                        className={pokemonsStore.pageSize === item ? "paginate active" : "paginate"}
                     >
                         {item}
                     </button>
@@ -137,19 +139,23 @@ class Main extends Component {
         const errorMessage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Preloader/> : null;
         const content = hasData && <div>
+            <div className="mainTitle">
+                <span>Pokemon API</span>
+            </div>
             {
-                pokemonItems.length > pageSize && <div>
-                    <ul id="dropdown"  style={{display:'none'}}>
-                        {dropDownItems}
-                    </ul>
-                    <div className="wrapper">
-                        <div className="paginate-wrapper" onClick={this.dropDown}>
-                            <i className="fa fa-caret-down"></i>
-                            <span>{pageSize}</span>
+                pokemonItems.length > pokemonsStore.pageSize && <div>
+
+                        <ul id="dropdown"  style={{display:'none'}}>
+                            {dropDownItems}
+                        </ul>
+                        <div className="wrapper">
+                            <div className="paginate-wrapper" onClick={this.dropDown}>
+                                <i className="fa fa-caret-down"></i>
+                                <span>{pokemonsStore.pageSize}</span>
+                            </div>
                         </div>
+                        <Pagination count={this.state.pagesCount} page={Store.pokemonsStore.currentPage} onChange={this.handleChange} />
                     </div>
-                    <Pagination count={this.state.pagesCount} page={currentPage} onChange={this.handleChange} />
-                </div>
             }
             <div className="check-box">
                 <FormControlLabel
@@ -160,12 +166,12 @@ class Main extends Component {
                 />
             </div>
             <div>
-                {(pokemonsList.length === 0 && currentPage > 1) && this.changeCurrentPage()}
+                {(pokemonsList.length === 0 && Store.pokemonsStore.currentPage > 1) && Store.changeCurrentPage()}
                 { pokemonsList.length === 0 && this.state.pagesCount === 0 ?
                     <EmptyFavoritePokemonsList/> :
                     <PokemonsList
                         searchFavorite = {this.searchFavorite}
-                        pokemonsList = {pokemonsList}
+                         pokemonsList = {pokemonsList}
                     />
 
                 }

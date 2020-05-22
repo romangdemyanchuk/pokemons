@@ -7,6 +7,7 @@ import './pokemonDetails.css'
 import Star from "../Star";
 import {checkIsFavorite} from "../Helpers/checkIsPokemonFavorite";
 import ErrorIndicator from "../ErrorIndicator";
+import {spliteUrl} from "../Helpers/spliteUrl";
 
 const TYPE_COLORS = {
     bug: 'B1C12E',
@@ -84,7 +85,7 @@ export default class PokemonDetails extends Component {
         if (pokemon.types) {
              typesPokemon = pokemon.types.map((item) => {
                 return (
-                    <div  key={item}>
+                    <div  key={spliteUrl(item.type.url)}>
                         <div className="typePokemon" >
                         <span
                             className="badge badge-pill mr-1"
@@ -104,7 +105,7 @@ export default class PokemonDetails extends Component {
         if (pokemon.stats) {
              statsPokemon = pokemon.stats.map((item) => {
                 return (
-                    <div key={item}>
+                    <div key={spliteUrl(item.stat.url)}>
                         <div className="statPokemon">
                             <div className="stat-name">
                                 {item.stat.name}
@@ -112,16 +113,21 @@ export default class PokemonDetails extends Component {
                             <div className="base_stat">
                                 <div className="progress">
                                         <div  className="progress-bar" role="progressbar"
-                                              /*{item.base_stat >= 100 &&*/
-                                              style={{ width: `item.base_stat`,
-                                                backgroundColor:'red',
-                                                borderRadius:"10px",
-                                                color:"#fff"
-                                            }}
+                                              style={
+                                                  item.base_stat >= 100 ?
+                                                      { width: `item.base_stat`,
+                                                          backgroundColor:'red',
+                                                          borderRadius:"10px",
+                                                          color:"#fff"
+                                                      } :
+                                                      { width: `${item.base_stat}%`}
+                                              }
                                               aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"
                                         >
                                             <small>{item.base_stat}</small>
                                         </div>
+
+
                                 </div>
                             </div>
                         </div>

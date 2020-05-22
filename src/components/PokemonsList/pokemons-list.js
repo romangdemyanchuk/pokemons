@@ -1,6 +1,6 @@
 import React from 'react'
 import './pokemons-list.css'
-import spliteUrl from '../Helpers/spliteUrl'
+import {spliteUrl} from '../Helpers/spliteUrl'
 import PokemonItem from "../PokemonItem/pokemon-item"
 
 const PokemonsList = ({pokemonsList, searchFavorite}) => {
@@ -18,6 +18,7 @@ const PokemonsList = ({pokemonsList, searchFavorite}) => {
     });
          return (
                  <div className="pokemon-list-items"> {list}</div>
+
          )
     };
 export default PokemonsList;

@@ -20,6 +20,27 @@ li {
 .MuiPaginationItem-root {
     margin: 0 1px !important;
 }
+#root {
+    /*padding-top: 70px;*/
+}
+.mainTitle {
+    background-color: #141617;
+    position: fixed;
+    z-index: 5;
+    padding: 12px 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.MuiInputBase-input {
+    margin-top: 50px !important;
+}
+.mainTitle span {
+    color:#e6e6e6;
+    font-family: Arial;
+    font-weight: 700;
+    font-size: 23px;
+}
 .droplink {
     width:20px;
     border-radius:3px;
@@ -32,14 +53,14 @@ li {
 #dropdown {
     position: absolute;
     left: 260px;
-    top: 93px;
+    top: 138px;
 }
 .wrapper {
     position: absolute;
     /*display: flex;*/
     text-align: left;
     margin-left: 255px;
-    top: 65px;
+    top: 117px;
 }
 .MuiPagination-root {
     margin-top: 10px;
@@ -63,7 +84,15 @@ li {
     margin-right: 7px;
     transition: .5s ease;
 }
-
+.MuiSvgIcon-root {
+    fill: gray !important;
+}
+.MuiCheckbox-colorSecondary.Mui-checked {
+    color: transparent;
+}
+.MuiIconButton-colorSecondary {
+    color: gray !important;
+}
 .active,
 .paginate:hover{
     background-color: rgba(0, 0, 0, 0.08);
@@ -111,11 +140,15 @@ li {
     }
     #dropdown {
         left: 16px;
-        top: 128px;
+        top: 185px;
     }
 }
-@media screen and (max-width: 440px) {
-    .MuiFormControlLabel-root {
-        margin-left: 95px !important;
+@media screen and (max-width: 420px) {
+    .wrapper {
+        margin: 70px 80px;
+    }
+    #dropdown {
+        left: 87px;
+        top: 212px;
     }
 }
