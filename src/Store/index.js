@@ -3,7 +3,8 @@ import { decorate, observe, observable} from "mobx";
 class Store {
     pokemonsStore = {
         pageSize: 10,
-        currentPage: 1
+        currentPage: 1,
+        showFavorite: false
     };
     set(payload) {
         this.pokemonsStore=payload;
@@ -13,6 +14,9 @@ class Store {
         };
     ChangeCurrentPage = (value) => {
         this.pokemonsStore.currentPage = value;
+    };
+    ChangeShowFavorite = () => {
+        this.pokemonsStore.showFavorite = !this.pokemonsStore.showFavorite;
     };
     // changeCurrentPage = () => {
     //

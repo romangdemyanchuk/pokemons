@@ -24,8 +24,8 @@ class Main extends Component {
         term:'',
         // pageSize: 10,
         pagesCount: null,
-        // currentPage: 1,
-        showFavorite: false,
+        currentPage: 1,
+        // showFavorite: false,
         error: false
     };
     componentDidMount() {
@@ -44,9 +44,11 @@ class Main extends Component {
                      pokemons: pokemons.results,
                      loading: false,
                      pagesCount: Math.ceil(pokemons.results.length/Store.pokemonsStore.pageSize)
+                }, () => {
+                     this.searchFavorite()
+                 })
              })
-        })
-     .catch(this.onError)
+            .catch(this.onError)
      }
     onSearchChange = (term) => {
         this.setState({term});
@@ -75,19 +77,18 @@ class Main extends Component {
         });
         this.setState({
             favouritePokemons: favoriteItems,
-            pagesCount: Math.ceil( (this.state.showFavorite ? favoriteItems.length : pokemons.length)/Store.pokemonsStore.pageSize)
+            pagesCount: Math.ceil( (Store.pokemonsStore.showFavorite ?
+                favoriteItems.length : pokemons.length)/Store.pokemonsStore.pageSize)
         });
     };
     handleChange = (event, value) => {
         this.setState({
-            // currentPage: value,
             pagesCount: Math.ceil(this.state.pokemons.length/Store.pokemonsStore.pageSize)
         });
         Store.ChangeCurrentPage(value);
     };
     itemsCountOnPage = (value) => {
         this.setState({
-            // pageSize: value,
             pagesCount: Math.ceil(this.state.pokemons.length/value),
         });
         Store.ChangePageSize(value);
@@ -103,14 +104,22 @@ class Main extends Component {
             [e.target.name]: e.target.checked
         }, () => {
             this.searchFavorite()
-        })
+        });
+        Store.ChangeShowFavorite();
         Store.ChangeCurrentPage(1);
     };
-    // changeCurrentPage = () => {
-    //     Store.pokemonsStore(prevState => ({
-    //         currentPage: prevState.currentPage-1
-    //     }));
-    // };
+    changeCurrentPage = () => {
+        (this.state.currentPage <= 1) ?
+        this.setState({
+            currentPage: 1
+        }, () => {
+            Store.ChangeCurrentPage(this.state.currentPage)
+        }): this.setState(prevState => ({
+            currentPage: prevState.currentPage-1
+        }), () => {
+            Store.ChangeCurrentPage(this.state.currentPage)
+        })
+    };
     slicePokemonsPages = (value) => {
         const {pokemonsStore} = Store;
         const currPage = (pokemonsStore.currentPage ? pokemonsStore.currentPage - 1 : 0);
@@ -118,9 +127,9 @@ class Main extends Component {
     };
     filterButtons = [10, 20, 50];
     render() {
-        const {loading, term, pokemons, showFavorite, favouritePokemons, error} = this.state;
-        const {pokemonsStore, currentPage} = Store;
-        let pokemonItems = showFavorite ? favouritePokemons : pokemons;
+        const {loading, term, pokemons, favouritePokemons, error} = this.state;
+        const {pokemonsStore} = Store;
+        let pokemonItems = pokemonsStore.showFavorite ? favouritePokemons : pokemons;
         pokemonItems = this.search(pokemonItems, term);
         const pokemonsList = pokemonItems.length === 0 ? [] : this.slicePokemonsPages(pokemonItems);
         let dropDownItems = this.filterButtons.map((item) => {
@@ -140,7 +149,7 @@ class Main extends Component {
         const spinner = loading ? <Preloader/> : null;
         const content = hasData && <div>
             <div className="mainTitle">
-                <span>Pokemon API</span>
+                <span>Pokemons</span>
             </div>
             {
                 pokemonItems.length > pokemonsStore.pageSize && <div>
@@ -150,7 +159,7 @@ class Main extends Component {
                         </ul>
                         <div className="wrapper">
                             <div className="paginate-wrapper" onClick={this.dropDown}>
-                                <i className="fa fa-caret-down"></i>
+                                <i className="fa fa-caret-down"/>
                                 <span>{pokemonsStore.pageSize}</span>
                             </div>
                         </div>
@@ -160,13 +169,13 @@ class Main extends Component {
             <div className="check-box">
                 <FormControlLabel
                     control={
-                        <Checkbox checked={showFavorite} onChange={this.changeCheckBox} name="showFavorite" />
+                        <Checkbox checked={Store.pokemonsStore.showFavorite} onChange={this.changeCheckBox} name="showFavorite" />
                     }
                     label="Show only favorite"
                 />
             </div>
             <div>
-                {(pokemonsList.length === 0 && Store.pokemonsStore.currentPage > 1) && Store.changeCurrentPage()}
+                {(pokemonsList.length === 0 && Store.pokemonsStore.currentPage > 1) && this.changeCurrentPage()}
                 { pokemonsList.length === 0 && this.state.pagesCount === 0 ?
                     <EmptyFavoritePokemonsList/> :
                     <PokemonsList
