@@ -135,7 +135,7 @@ export default class PokemonDetails extends Component {
         const hasData = !(loading || error);
         const errorMessage = error ? <ErrorIndicator/> : null;
         const content = hasData && <div className="each-item">
-            <Link to={`/`}>
+            <Link to={`/pokemons`}>
                 <Button  className='item-button'>
                     <i className="fa fa-arrow-left"/>
                 </Button>

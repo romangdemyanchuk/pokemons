@@ -33,7 +33,7 @@ export default class PokemonItem extends Component {
            </div>
        </div>;
        return (
-           <Link to={`/${pokemon.id}`}>
+           <Link to={`/pokemons/${pokemon.id}`}>
                <Card className="card">
                    <CardActionArea className="pokemon-item">
                        {cardInfo}
