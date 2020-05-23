@@ -34,9 +34,9 @@
     width: 160px;
 }
 .each-pokemon .ldio-4p635hxe379 {
-     position: absolute;
-     top: 45px;
-     left: 35%;
+    position: absolute;
+    width: 100%;
+    margin-left: 41%;
  }
 .MuiButton-text {
     padding: 4px 8px !important;
@@ -120,6 +120,9 @@
     }
 }
 @media screen and (max-width: 992px) {
+    .each-pokemon .ldio-4p635hxe379 {
+        margin-left: 35%;
+    }
     .image-wrapper {
         display: block;
         margin-right: 0;
@@ -136,6 +139,9 @@
     .each-item img {
         width: 250px;
     }
+    .each-pokemon .ldio-4p635hxe379 {
+        margin-left: 25%;
+    }
     .badge {
         font-size: 13px !important;
         padding: 1px 5px 5px 5px !important;
@@ -147,9 +153,6 @@
         min-width: 220px;
         max-width: 220px;
     }
-    .each-pokemon .ldio-4p635hxe379 {
-        left: 20%;
-    }
     .progress-bar small {
         padding-left: 45px;
     }
@@ -160,6 +163,9 @@
 @media screen and (max-width: 490px) {
     .each-item img {
         width: 160px;
+    }
+    .each-pokemon .ldio-4p635hxe379 {
+        margin-left: 15%;
     }
     .pokemon-name {
         font-size: 17px;

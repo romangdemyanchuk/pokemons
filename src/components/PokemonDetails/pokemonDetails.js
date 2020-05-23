@@ -39,7 +39,7 @@ export default class PokemonDetails extends Component {
         error: false
     };
     onError = () => {
-        this.setState({error: true, loading: false})
+        this.setState({error: true, loading: true})
     };
     constructor(props) {
         super(props);
@@ -56,7 +56,7 @@ export default class PokemonDetails extends Component {
             .then((pokemon) => {
                 this.setState({
                     pokemon,
-                    loading: false
+                    loading: true
                 }, () => {
                     this.checkPokemonIsFavorite();
                 });
