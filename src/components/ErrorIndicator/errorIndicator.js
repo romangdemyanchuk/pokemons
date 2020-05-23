@@ -2,7 +2,6 @@ import React from 'react';
 import './errorIndicator.css'
 import  errorImg from '../../images/error.png'
 const ErrorIndicator = () => {
-    console.log('njkvd');
     return (
         <div className="errorWrapper">
             <div className="errorTitle">Something has gone wrong</div>

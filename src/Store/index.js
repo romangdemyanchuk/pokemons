@@ -1,4 +1,4 @@
-import { decorate, observe, observable} from "mobx";
+import { decorate, observable} from "mobx";
 
 class Store {
     pokemonsStore = {
@@ -18,14 +18,6 @@ class Store {
     ChangeShowFavorite = () => {
         this.pokemonsStore.showFavorite = !this.pokemonsStore.showFavorite;
     };
-    // changeCurrentPage = () => {
-    //
-    //         observe( (newValue, oldValue) => {
-    //             console.log('oldValue', oldValue);
-    //             this.pokemonsStore.currentPage = oldValue-1;
-    //         });
-    // };
-
 }
 Store = decorate(Store, {
     pokemonsStore:observable

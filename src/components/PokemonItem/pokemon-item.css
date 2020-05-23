@@ -3,7 +3,7 @@
     padding-bottom: 5px !important;
 }
 .pokemon-items-name {
-    font-family: 'Arial';
+    font-family: 'Arial', sans-serif;
     font-size: 22px;
     margin: 15px 0 18px 0;
     font-weight: bold;
@@ -13,10 +13,12 @@
     width: 200px;
 }
 .MuiPaper-elevation1 {
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.2), 3px 2px 0 2px rgba(0,0,0,0.14), 1px 2px 0 3px rgba(0,0,0,0.12) !important;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.2),
+    3px 2px 0 2px rgba(0,0,0,0.14),
+    1px 2px 0 3px rgba(0,0,0,0.12) !important;
 }
 .item-wrapper .star {
-text-align: right;
+    text-align: right;
 }
 .item-wrapper .star img {
     width: 20px !important;

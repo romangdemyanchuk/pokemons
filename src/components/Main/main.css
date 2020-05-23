@@ -20,9 +20,6 @@ li {
 .MuiPaginationItem-root {
     margin: 0 1px !important;
 }
-#root {
-    /*padding-top: 70px;*/
-}
 .mainTitle {
     background-color: #141617;
     position: fixed;
@@ -37,7 +34,7 @@ li {
 }
 .mainTitle span {
     color:#e6e6e6;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     font-weight: 700;
     font-size: 23px;
 }
@@ -46,43 +43,38 @@ li {
     border-radius:3px;
     margin:10px 0 0 25px
 }
-#dropdown li {
-    /*margin-bottom: 7px;*/
-    display: unset;
-}
 #dropdown {
     position: absolute;
-    left: 260px;
-    top: 138px;
+    left: 50%;
+    transform: translate(-50%, 70%);
 }
 .wrapper {
-    position: absolute;
-    /*display: flex;*/
-    text-align: left;
-    margin-left: 255px;
-    top: 117px;
-}
-.MuiPagination-root {
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
 }
 .fa-caret-down {
-    margin-left: 55px;
+    margin-left: 0;
 }
-.paginate-wrapper {
+.dropdown-wrapper {
+    position: relative;
     cursor: pointer;
+    margin: 10px 40px 0 0;
 }
-.paginate-wrapper span {
+.dropdown-wrapper span {
     margin-left: 3px;
 }
-.paginate {
+.dropdown {
     cursor: pointer;
     outline: none;
+    font-size: 14px;
     padding: 8px 9px;
     border-radius: 16px;
     background-color: #fff;
-    border: 1px solid lightgrey;
     margin-right: 7px;
     transition: .5s ease;
+    border: none;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 .MuiSvgIcon-root {
     fill: gray !important;
@@ -94,12 +86,11 @@ li {
     color: gray !important;
 }
 .active,
-.paginate:hover{
+.dropdown:hover{
     background-color: rgba(0, 0, 0, 0.08);
-    border-color: darkgrey;
 }
 .check-box {
-    /*text-align: right;*/
+    margin-top: 30px;
 }
 .card:hover {
     animation: card .5s linear;
@@ -118,37 +109,20 @@ li {
         transform: translateY(-0px);
     }
 }
-@media screen and (max-width: 1070px) {
-    .wrapper {
-        /*margin-left: 200px;*/
-    }
-    .MuiFormControlLabel-root {
-        margin-top: 4px !important;
-    }
-}
-@media screen and (max-width: 1000px) {
-    .wrapper {
-        margin-left: 90px;
+@media screen and (max-width: 530px) {
+    .dropdown-wrapper {
+        margin: 10px 0;
     }
     #dropdown {
-        left: 97px;
+        transform: translate(-50%, 64%);
     }
-}
-@media screen and (max-width: 710px) {
     .wrapper {
-        margin: 40px 0 0 10px;
+        display: block;
     }
-    #dropdown {
-        left: 16px;
-        top: 185px;
+    .check-box {
+        margin-top: 0;
     }
-}
-@media screen and (max-width: 420px) {
-    .wrapper {
-        margin: 70px 80px;
-    }
-    #dropdown {
-        left: 87px;
-        top: 212px;
+    .MuiPagination-root {
+        margin-top: 45px;
     }
 }

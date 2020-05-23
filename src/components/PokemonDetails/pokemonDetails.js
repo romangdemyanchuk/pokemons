@@ -48,7 +48,6 @@ export default class PokemonDetails extends Component {
     componentDidMount() {
         checkIsFavorite(this.setFavorite, this.state.pokemon.id)
     }
-
     setFavorite = (isFavorite) => {
         this.setState({isFavorite: isFavorite});
     };
@@ -86,16 +85,16 @@ export default class PokemonDetails extends Component {
              typesPokemon = pokemon.types.map((item) => {
                 return (
                     <div  key={spliteUrl(item.type.url)}>
-                        <div className="typePokemon" >
-                        <span
-                            className="badge badge-pill mr-1"
-                            style={{
-                                backgroundColor: `#${TYPE_COLORS[item.type.name]}`,
-                                color: 'white'
-                            }}
-                        >
-                            {item.type.name}
-                        </span>
+                        <div className="typePokemon">
+                            <span
+                                className="badge badge-pill mr-1"
+                                style={{
+                                    backgroundColor: `#${TYPE_COLORS[item.type.name]}`,
+                                    color: 'white'
+                                }}
+                            >
+                                {item.type.name}
+                            </span>
                         </div>
                     </div>
                 );
@@ -112,7 +111,7 @@ export default class PokemonDetails extends Component {
                             </div>
                             <div className="base_stat">
                                 <div className="progress">
-                                        <div  className="progress-bar" role="progressbar"
+                                    <div  className="progress-bar" role="progressbar"
                                               style={
                                                   item.base_stat >= 100 ?
                                                       { width: `item.base_stat`,
@@ -123,11 +122,9 @@ export default class PokemonDetails extends Component {
                                                       { width: `${item.base_stat}%`}
                                               }
                                               aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"
-                                        >
+                                    >
                                             <small>{item.base_stat}</small>
-                                        </div>
-
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +147,8 @@ export default class PokemonDetails extends Component {
                 <Star
                     pokemonId={this.state.pokemon.id}
                     setFavorite={this.setFavorite}
-                    isFavorite={this.state.isFavorite}/>
+                    isFavorite={this.state.isFavorite}
+                />
             </div>
             <div className="pokemon-items-type">
                 <div className="typesPokemon-wrapper">

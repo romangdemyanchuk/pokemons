@@ -9,11 +9,10 @@ export default class PokeApiService {
     }
 
     getAll() {
-        return this.getResource(`/v2/pokemon?limit=100`)
+        return this.getResource(`/v2/pokemon?limit=100`);
     }
     async getPokemonCharacteristic(id) {
         return this.getResource(`/v2/pokemon/${id}`);
-
     }
 }
 

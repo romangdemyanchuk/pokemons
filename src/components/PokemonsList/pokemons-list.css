@@ -8,12 +8,6 @@
 .MuiCardActionArea-root {
     padding: 10px 0;
 }
-
-@media screen and (max-width: 1900px) {
-    .MuiCard-root {
-        /*width: 350px;*/
-    }
-}
 @media screen and (max-width: 1200px) {
     .pokemon-list-items {
         grid-template-columns: repeat(3, 1fr);

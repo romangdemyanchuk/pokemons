@@ -9,7 +9,7 @@
     position: relative;
 }
 .each-item {
-    font-family: Arial;
+    font-family: 'Arial', sans-serif;
 }
 .item-button:hover {
     cursor: pointer;
@@ -66,11 +66,7 @@
     font-size: 14px !important;
     margin-right: 5px;
     letter-spacing: 1.5px;
-    color: white;
-
-}
-.type-stat-wrapper {
-
+    color: #fff;
 }
 .image-wrapper {
     display: flex;
@@ -122,7 +118,6 @@
     .image-wrapper {
         margin-right: 10%;
     }
-
 }
 @media screen and (max-width: 992px) {
     .image-wrapper {

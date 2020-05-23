@@ -5,7 +5,7 @@ import './SearchByName.css'
 export default class SearchByName extends Component {
     state = {
         term:''
-};
+    };
     onSearchChange = (e) => {
         const term = e.target.value;
         this.setState({term});
@@ -17,7 +17,8 @@ export default class SearchByName extends Component {
                 <Input className="search-input" type="text" name="item"
                         placeholder="Search pokemon by name "
                         value={this.state.term}
-                        onChange={this.onSearchChange}/>
+                        onChange={this.onSearchChange}
+                />
             </form>
         )
     }

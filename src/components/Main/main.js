@@ -22,12 +22,11 @@ class Main extends Component {
         activePaginateButton: null,
         loading: true,
         term:'',
-        // pageSize: 10,
         pagesCount: null,
         currentPage: 1,
-        // showFavorite: false,
         error: false
     };
+    filterButtons = [10, 20, 50];
     componentDidMount() {
         this.allPokemons();
     }
@@ -90,14 +89,15 @@ class Main extends Component {
     itemsCountOnPage = (value) => {
         this.setState({
             pagesCount: Math.ceil(this.state.pokemons.length/value),
+        }, () => {
+            this.dropDown();
         });
         Store.ChangePageSize(value);
-        let a = document.getElementById('dropdown');
-            a.style.display = 'none';
+
     };
     dropDown = () => {
         let a = document.getElementById('dropdown');
-        (a.style.display === 'none') ? ( a.style.display = 'block') : a.style.display = 'none';
+        (a.style.display === 'none') ? ( a.style.display = 'flex') : a.style.display = 'none';
     };
     changeCheckBox = e => {
         this.setState({
@@ -109,6 +109,7 @@ class Main extends Component {
         Store.ChangeCurrentPage(1);
     };
     changeCurrentPage = () => {
+        console.log('this.state.currentPage',this.state.currentPage);
         (this.state.currentPage <= 1) ?
         this.setState({
             currentPage: 1
@@ -125,7 +126,6 @@ class Main extends Component {
         const currPage = (pokemonsStore.currentPage ? pokemonsStore.currentPage - 1 : 0);
         return value.slice(currPage*pokemonsStore.pageSize, currPage*pokemonsStore.pageSize + pokemonsStore.pageSize)
     };
-    filterButtons = [10, 20, 50];
     render() {
         const {loading, term, pokemons, favouritePokemons, error} = this.state;
         const {pokemonsStore} = Store;
@@ -137,7 +137,7 @@ class Main extends Component {
                 <li key={item}>
                     <button
                         onClick={() => this.itemsCountOnPage(item)}
-                        className={pokemonsStore.pageSize === item ? "paginate active" : "paginate"}
+                        className={pokemonsStore.pageSize === item ? "dropdown active" : "dropdown"}
                     >
                         {item}
                     </button>
@@ -153,23 +153,26 @@ class Main extends Component {
             </div>
             {
                 pokemonItems.length > pokemonsStore.pageSize && <div>
-
-                        <ul id="dropdown"  style={{display:'none'}}>
-                            {dropDownItems}
-                        </ul>
-                        <div className="wrapper">
-                            <div className="paginate-wrapper" onClick={this.dropDown}>
+                    <div className="wrapper">
+                        <div className="dropdown-wrapper">
+                            <ul id="dropdown"  style={{display:'none'}}>
+                                {dropDownItems}
+                            </ul>
+                            <span onClick={this.dropDown}>
                                 <i className="fa fa-caret-down"/>
                                 <span>{pokemonsStore.pageSize}</span>
-                            </div>
+                            </span>
                         </div>
-                        <Pagination count={this.state.pagesCount} page={Store.pokemonsStore.currentPage} onChange={this.handleChange} />
+                        <Pagination count={this.state.pagesCount} page={Store.pokemonsStore.currentPage}
+                                    onChange={this.handleChange} />
                     </div>
+                </div>
             }
             <div className="check-box">
                 <FormControlLabel
                     control={
-                        <Checkbox checked={Store.pokemonsStore.showFavorite} onChange={this.changeCheckBox} name="showFavorite" />
+                        <Checkbox checked={Store.pokemonsStore.showFavorite}
+                                  onChange={this.changeCheckBox} name="showFavorite" />
                     }
                     label="Show only favorite"
                 />
@@ -182,7 +185,6 @@ class Main extends Component {
                         searchFavorite = {this.searchFavorite}
                          pokemonsList = {pokemonsList}
                     />
-
                 }
             </div>
         </div>;

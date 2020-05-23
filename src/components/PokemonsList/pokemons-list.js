@@ -20,5 +20,5 @@ const PokemonsList = ({pokemonsList, searchFavorite}) => {
                  <div className="pokemon-list-items"> {list}</div>
 
          )
-    };
+};
 export default PokemonsList;
