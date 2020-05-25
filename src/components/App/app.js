@@ -8,7 +8,7 @@ export default class App extends Component {
     render() {
         return (
             <Router>
-                <Route exact path="/pokemons" component={Pokemons}/>
+                <Route exact path="/pokemons/" component={Pokemons}/>
                 <Route path="/pokemons/:id" component={PokemonDetails}/>
             </Router>
         );
