@@ -29,14 +29,11 @@ li {
     left: 0;
     right: 0;
 }
-.MuiInputBase-input {
-    margin-top: 50px !important;
+.mainTitle img {
+    width: 155px;
 }
-.mainTitle span {
-    color:#e6e6e6;
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-    font-size: 23px;
+.MuiInputBase-input {
+    margin-top: 80px !important;
 }
 .droplink {
     width:20px;

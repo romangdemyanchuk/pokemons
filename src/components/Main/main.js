@@ -10,6 +10,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Store from '../../Store/index'
 import {observer} from "mobx-react";
 import ErrorIndicator from "../ErrorIndicator/errorIndicator";
+import logo from '../../images/logo.png'
 import './main.css';
 
 class Main extends Component {
@@ -149,7 +150,9 @@ class Main extends Component {
         const spinner = loading ? <Preloader/> : null;
         const content = hasData && <div>
             <div className="mainTitle">
-                <span>Pokemons</span>
+                <img src={logo} alt="logo"/>
+
+                {/*<span>Pokemons</span>*/}
             </div>
             {
                 pokemonItems.length > pokemonsStore.pageSize && <div>
